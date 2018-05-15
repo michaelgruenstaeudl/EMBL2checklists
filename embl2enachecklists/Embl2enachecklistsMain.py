@@ -69,8 +69,9 @@ def embl2enachecklists(path_to_embl,
 
 # 3.1. Extraction of charset_sym
         # NOTE: The '[1:]' is necessary to exclude the note of the source_feature
-        charset_syms = [f.qualifiers['note'][0] for f in seq_record.features][1:]
-        print charset_syms
+        #pdb.set_trace()
+        #charset_syms = [f.qualifiers['note'][0] for f in seq_record.features[1:]]
+        charset_syms = [f.qualifiers['gene'][0] for f in seq_record.features[1:]]
 
 # 3.2. Conversion to checklists
         if checklist_type == 'ITS':

@@ -27,7 +27,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'embl2enachecklist
 __author__ = 'Michael Gruenstaeudl <m.gruenstaeudl@fu-berlin.de>'
 __copyright__ = 'Copyright (C) 2016-2018 Michael Gruenstaeudl'
 __info__ = 'embl2enachecklists'
-__version__ = '2018.03.29.1700'
+__version__ = '2018.05.16.2000'
 
 #############
 # DEBUGGING #
@@ -65,58 +65,75 @@ def embl2enachecklists(path_to_embl,
 ########################################################################
 
 # 3. CONVERSION TO CHECKLISTS
-    for counter, seq_record in enumerate(seq_records):
+    for counter, seq_record in enumerate(seq_records): # Looping through records
+        try:
 
-# 3.1. Extraction of charset_sym
-        # NOTE: The '[1:]' is necessary to exclude the note of the source_feature
-        #pdb.set_trace()
-        #charset_syms = [f.qualifiers['note'][0] for f in seq_record.features[1:]]
-        charset_syms = [f.qualifiers['gene'][0] for f in seq_record.features[1:]]
-
-# 3.2. Conversion to checklists
-        if checklist_type == 'ITS':
-            if checklist_type in charset_syms:
-                ClOps.Writer().ITS(seq_record, counter, outp_handle)
-            else:
-                sys.exit('%s annonex2embl ERROR: Checklist_type not present in '
-                         'charset symbols: `%s`' % ('\n', colored(charset_syms, 'red')))
-
-        elif checklist_type == 'rRNA':
-            keyw = ['18S', '28S']
-            if any(elem in keyw for elem in charset_syms):
-                ClOps.Writer().rRNA(seq_record, counter, charset_syms,
-                                    outp_handle)
-            else:
-                sys.exit('%s annonex2embl ERROR: None of the keywords (`%s`) present in '
-                         'charset symbols: `%s`' % ('\n', colored(keyw, 'red'), colored(charset_syms, 'red')))
-
-        elif checklist_type == 'trnK_matK':
-            keyw = ['trnK', 'matK']
-            if any(elem in keyw for elem in charset_syms):
-                ClOps.Writer().trnK_matK(seq_record, counter,
-                                         outp_handle)
-            else:
-                sys.exit('%s annonex2embl ERROR: None of the keywords (`%s`) present in '
-                         'charset symbols: `%s`' % ('\n', colored(keyw, 'red'), colored(charset_syms, 'red')))
-
-        elif checklist_type == 'IGS':
+    # 3.1. Extraction of charset symbols
+            gene_quals = [f.qualifiers for f in seq_record.features if not f.type=='source'] # Produces a list of dictionaries
+            charset_syms = []
+            for keyw in ['gene', 'note']:
+                for dct in gene_quals:
+                    try:
+                        charset_syms.extend(dct[keyw])
+                    except KeyError:
+                        charset_syms = charset_syms
             if charset_syms:
-                ClOps.Writer().IGS(seq_record, counter,
-                                   charset_syms, outp_handle)
-            else:
-                sys.exit('%s annonex2embl ERROR: To few charset symbols: `%s`' % ('\n', colored(charset_syms, 'red')))
+                # 3.1.1. Extract all unique values in list, keep order of original list
+                seen = set()
+                charset_syms = [e for e in charset_syms if e not in seen and not seen.add(e)]
+                # 3.1.2. Remove any multi-word elements
+                charset_syms = [e for e in charset_syms if len(e.split(" "))==1] 
+            if not charset_syms:
+                sys.exit('%s annonex2embl ERROR: Parsing of charset symbol '
+                         'unsuccessful')
 
-        elif checklist_type == 'genomic_CDS':
-            if len(charset_syms)>=2:
-                ClOps.Writer().genomic_CDS(seq_record, counter,
+    # 3.2. Conversion to checklist format
+            if checklist_type == 'ITS':
+                if checklist_type in charset_syms:
+                    ClOps.Writer().ITS(seq_record, counter, outp_handle)
+                else:
+                    sys.exit('%s annonex2embl ERROR: Checklist_type not present in '
+                             'charset symbols: `%s`' % ('\n', colored(charset_syms, 'red')))
+
+            elif checklist_type == 'rRNA':
+                keyw = ['18S', '28S']
+                if any(elem in keyw for elem in charset_syms):
+                    ClOps.Writer().rRNA(seq_record, counter, charset_syms,
+                                        outp_handle)
+                else:
+                    sys.exit('%s annonex2embl ERROR: None of the keywords (`%s`) present in '
+                             'charset symbols: `%s`' % ('\n', colored(keyw, 'red'), colored(charset_syms, 'red')))
+
+            elif checklist_type == 'trnK_matK':
+                keyw = ['trnK', 'matK']
+                if any(elem in keyw for elem in charset_syms):
+                    ClOps.Writer().trnK_matK(seq_record, counter,
+                                             outp_handle)
+                else:
+                    sys.exit('%s annonex2embl ERROR: None of the keywords (`%s`) present in '
+                             'charset symbols: `%s`' % ('\n', colored(keyw, 'red'), colored(charset_syms, 'red')))
+
+            elif checklist_type == 'IGS':
+                if charset_syms:
+                    ClOps.Writer().IGS(seq_record, counter,
                                        charset_syms, outp_handle)
-            else:
-                sys.exit('%s annonex2embl ERROR: To few charset symbols: `%s`' % ('\n', colored(charset_syms, 'red')))
+                else:
+                    sys.exit('%s annonex2embl ERROR: To few charset symbols: `%s`' % ('\n', colored(charset_syms, 'red')))
 
-        else:
-            sys.exit('%s annonex2embl ERROR: Checklist type `%s` '
-                     'not recognized.' % ('\n', 
-                     colored(checklist_type, 'red')))
+            elif checklist_type == 'genomic_CDS':
+                if len(charset_syms)>=2:
+                    ClOps.Writer().genomic_CDS(seq_record, counter,
+                                           charset_syms, outp_handle)
+                else:
+                    sys.exit('%s annonex2embl ERROR: To few charset symbols: `%s`' % ('\n', colored(charset_syms, 'red')))
+
+            else:
+                sys.exit('%s annonex2embl ERROR: Checklist type `%s` '
+                         'not recognized.' % ('\n', 
+                         colored(checklist_type, 'red')))
+
+        except:
+            raise ME.MyException('%s annonex2embl ERROR: Processing of record `%s` failed.' % ('\n', colored(seq_record.name, 'red')))
 
 ########################################################################
 

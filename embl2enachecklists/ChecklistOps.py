@@ -17,7 +17,7 @@ import MyExceptions as ME
 __author__ = 'Michael Gruenstaeudl <m.gruenstaeudl@fu-berlin.de>'
 __copyright__ = 'Copyright (C) 2016-2018 Michael Gruenstaeudl'
 __info__ = 'nex2embl'
-__version__ = '2018.03.29.1900'
+__version__ = '2018.05.16.2000'
 
 #############
 # DEBUGGING #
@@ -62,7 +62,7 @@ class Writer:
         # ENTRYNUMBER
         entrynumber = str(counter+1)  # enumerate counter starts counting at 0
         # ORGANISM_NAME
-        organism_name = seq_record.name
+        organism_name = [f.qualifiers['organism'] for f in seq_record.features if f.type=='source'][0][0]
         # ENV_SAMPLE
         env_sam = 'no'
         # GENE               # Symbol of the gene corresponding to a sequence region; example: RdRp, sigA, inv
@@ -74,13 +74,13 @@ class Writer:
 
         # the gene
         the_gene = [f for f in seq_record.features
-                    if f.type == 'gene']
+                    if f.type=='gene']
         try:
             the_gene = the_gene[0]
         except:
             try:
                 the_gene = [f for f in seq_record.features
-                            if f.type == 'CDS']
+                            if f.type=='CDS']
             except:
                 raise ME.MyException('%s annonex2embl ERROR: Problem \
                     with `%s`. %s gene not found.' % ('\n', seq_name, 'The gene'))
@@ -104,26 +104,25 @@ class Writer:
         # READING FRAME  # Mandatory if your CDS is 5' partial as it defines the reading frame. Location of the first base of the first fully-encoded amino acid., Example: 1,2 or 3
         read_frame = "12345"
 
-        # source feature is always first in list
-        qualifiers = seq_record.features[0].qualifiers
+        source_qualifiers = [f.qualifiers for f in seq_record.features if f.type=='source'][0]
         # ISOLATE
         try:
-            isolate = qualifiers['isolate'][0]
+            isolate = source_qualifiers['isolate'][0]
         except:
             isolate = ''
         # SPEC_VOUCH
         try:
-            spec_vouch = qualifiers['specimen_voucher'][0]
+            spec_vouch = source_qualifiers['specimen_voucher'][0]
         except:
             spec_vouch = ''
         # LOCALITY
         try:
-            country = qualifiers['country'][0]
+            country = source_qualifiers['country'][0]
         except:
             country = ''
         # ECOTYPE
         try:
-            ecotype = qualifiers['ecotype'][0]
+            ecotype = source_qualifiers['ecotype'][0]
         except:
             ecotype = ''
 
@@ -166,28 +165,25 @@ class Writer:
         # ENTRYNUMBER
         entrynumber = str(counter+1)  # enumerate counter starts counting at 0
         # ORGANISM_NAME
-        organism_name = seq_record.name
+        organism_name = [f.qualifiers['organism'] for f in seq_record.features if f.type=='source'][0][0]
 
+        gene_features = [f for f in seq_record.features if not f.type=='source']
         # trnK_intron
-        trnK_intron = [f for f in seq_record.features
-                       if f.id == 'trnK' and f.type == 'intron']
         try:
-            trnK_intron = str(trnK_intron[0])
+            trnK_intron = [f for f in gene_features
+                           if 'trnK' in f.qualifiers['gene'] and f.type=='intron']
             trnK_intron_present = 'yes'
         except:
             trnK_intron_present = 'no'
+
         # matK
-        matK_gene = [f for f in seq_record.features
-                     if f.id == 'matK' and f.type == 'gene']
         try:
+            matK_gene = [f for f in gene_features
+                         if 'matK' in f.qualifiers['gene'] and 
+                         (f.type=='gene' or f.type=='CDS')]
             matK_gene = matK_gene[0]
         except:
-            try:
-                matK_gene = [f for f in seq_record.features
-                             if f.id == 'matK' and f.type == 'CDS']
-            except:
-                raise ME.MyException('%s annonex2embl ERROR: Problem \
-                    with `%s`. %s gene not found.' % ('\n', seq_name, 'matK'))
+            raise ME.MyException('%s annonex2embl ERROR: Qualifiers for gene `%s` not found.' % ('\n', 'matK'))
 
         # 5'_CDS and 5'_PARTIAL
             # 5'_CDS: Start of the matK coding region relative to the submitted sequence. For a full length CDS this is the position of the first base of the start codon.
@@ -207,26 +203,25 @@ class Writer:
         if type(matK_gene.location.end) == Bio.SeqFeature.AfterPosition:
             threeprime_partial = 'yes'
 
-        # source feature is always first in list
-        qualifiers = seq_record.features[0].qualifiers
+        source_qualifiers = [f.qualifiers for f in seq_record.features if f.type=='source'][0]
         # ISOLATE
         try:
-            isolate = qualifiers['isolate'][0]
+            isolate = source_qualifiers['isolate'][0]
         except:
             isolate = ''
         # SPEC_VOUCH
         try:
-            spec_vouch = qualifiers['specimen_voucher'][0]
+            spec_vouch = source_qualifiers['specimen_voucher'][0]
         except:
             spec_vouch = ''
         # LOCALITY
         try:
-            country = qualifiers['country'][0]
+            country = source_qualifiers['country'][0]
         except:
             country = ''
         # ECOTYPE
         try:
-            ecotype = qualifiers['ecotype'][0]
+            ecotype = source_qualifiers['ecotype'][0]
         except:
             ecotype = ''
 
@@ -266,35 +261,34 @@ class Writer:
         # ENTRYNUMBER
         entrynumber = str(counter+1)  # enumerate counter starts counting at 0
         # ORGANISM_NAME
-        organism_name = seq_record.name
+        organism_name = [f.qualifiers['organism'] for f in seq_record.features if f.type=='source'][0][0]
         # SEDIMENT
         sediment = '_'.join(charset_syms)
 
-        # source feature is always first in list
-        qualifiers = seq_record.features[0].qualifiers
+        source_qualifiers = [f.qualifiers for f in seq_record.features if f.type=='source'][0]
         # ISOLATE
         try:
-            isolate = qualifiers['isolate'][0]
+            isolate = source_qualifiers['isolate'][0]
         except:
             isolate = ''
         # ISOLATION_SOURCE
         try:
-            isol_source = qualifiers['isolation_source']
+            isol_source = source_qualifiers['isolation_source']
         except:
             isol_source = ''
         # COUNTRY
         try:
-            country = qualifiers['country'][0]
+            country = source_qualifiers['country'][0]
         except:
             country = ''
         # ECOTYPE
         try:
-            lat_lon = qualifiers['lat_lon'][0]
+            lat_lon = source_qualifiers['lat_lon'][0]
         except:
             lat_lon = ''
         # COLLECTION_DATE
         try:
-            collection_date = qualifiers['collection_date']
+            collection_date = source_qualifiers['collection_date']
         except:
             collection_date = ''
 
@@ -331,13 +325,12 @@ class Writer:
         entrynumber = str(counter+1)  # enumerate counter starts counting at 0
 
         # ORGANISM_NAME
-        organism_name = seq_record.name
+        organism_name = [f.qualifiers['organism'] for f in seq_record.features if f.type=='source'][0][0]
 
-        # source feature is always first in list
-        qualifiers = seq_record.features[0].qualifiers
+        source_qualifiers = [f.qualifiers for f in seq_record.features if f.type=='source'][0]
         # ISOLATE
         try:
-            isolate = qualifiers['isolate'][0]
+            isolate = source_qualifiers['isolate'][0]
         except:
             isolate = ''
 
@@ -346,17 +339,17 @@ class Writer:
 
         # COUNTRY
         try:
-            country = qualifiers['country'][0]
+            country = source_qualifiers['country'][0]
         except:
             country = ''
 
         # SPEC_VOUCH
         try:
-            spec_vouch = qualifiers['specimen_voucher'][0]
+            spec_vouch = source_qualifiers['specimen_voucher'][0]
         except:
             spec_vouch = ''
 
-        all_seqrec_features = [f.id for f in seq_record.features]
+        all_seqrec_features = [f.qualifiers['gene'] for f in seq_record.features]
         # 18S
         if '18S' in all_seqrec_features:
             RNA_18S = 'partial'
@@ -419,34 +412,39 @@ class Writer:
         # ENTRYNUMBER
         entrynumber = str(counter+1)  # enumerate counter starts counting at 0
         # ORGANISM_NAME
-        organism_name = seq_record.name
+        organism_name = [f.qualifiers['organism'] for f in seq_record.features if f.type=='source'][0][0]
 
         # ENV_SAMPLE
         env_sam = 'no'
-        # GENE1
-        gene1 = charset_syms[0]
-        # G1PRESENT
-        g1present = 'no'  # TO BE IMPROVED
-        # GENE2
-        gene2 = charset_syms[1]
-        # G2PRESENT
-        g2present = 'no'  # TO BE IMPROVED
+        # GENE1 and G1PRESENT
+        try:
+            gene1 = charset_syms[0]
+            g1present = 'yes'
+        except:
+            gene1 = 'placeholder'
+            g1present = 'no'
+        # GENE2 and G2PRESENT
+        try:
+            gene2 = charset_syms[1]
+            g2present = 'yes'
+        except:
+            gene2 = 'placeholder'
+            g2present = 'no'
 
-        # source feature is always first in list
-        qualifiers = seq_record.features[0].qualifiers
+        source_qualifiers = [f.qualifiers for f in seq_record.features if f.type=='source'][0]
         # ISOLATE
         try:
-            isolate = qualifiers['isolate'][0]
+            isolate = source_qualifiers['isolate'][0]
         except:
             isolate = ''
         # SPEC_VOUCH
         try:
-            spec_vouch = qualifiers['specimen_voucher'][0]
+            spec_vouch = source_qualifiers['specimen_voucher'][0]
         except:
             spec_vouch = ''
         # COUNTRY
         try:
-            country = qualifiers['country'][0]
+            country = source_qualifiers['country'][0]
         except:
             country = ''
 
@@ -465,5 +463,6 @@ class Writer:
                     country,
                     sequence
                     ]
+
         out_string = '\t'.join(out_list) + '\n'
         outp_handle.write(out_string)

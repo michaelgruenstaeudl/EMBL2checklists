@@ -27,7 +27,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'embl2enachecklist
 __author__ = 'Michael Gruenstaeudl <m.gruenstaeudl@fu-berlin.de>'
 __copyright__ = 'Copyright (C) 2016-2018 Michael Gruenstaeudl'
 __info__ = 'embl2enachecklists'
-__version__ = '2018.05.16.2000'
+__version__ = '2018.05.23.2000'
 
 #############
 # DEBUGGING #
@@ -69,23 +69,8 @@ def embl2enachecklists(path_to_embl,
         try:
 
     # 3.1. Extraction of charset symbols
-            gene_quals = [f.qualifiers for f in seq_record.features if not f.type=='source'] # Produces a list of dictionaries
-            charset_syms = []
-            for keyw in ['gene', 'note']:
-                for dct in gene_quals:
-                    try:
-                        charset_syms.extend(dct[keyw])
-                    except KeyError:
-                        charset_syms = charset_syms
-            if charset_syms:
-                # 3.1.1. Extract all unique values in list, keep order of original list
-                seen = set()
-                charset_syms = [e for e in charset_syms if e not in seen and not seen.add(e)]
-                # 3.1.2. Remove any multi-word elements
-                charset_syms = [e for e in charset_syms if len(e.split(" "))==1] 
-            if not charset_syms:
-                sys.exit('%s annonex2embl ERROR: Parsing of charset symbol '
-                         'unsuccessful')
+            sym_keywrds = ['gene', 'note']
+            charset_syms = ClOps.Parser().parse_charset_sym(seq_record, sym_keywrds)
 
     # 3.2. Conversion to checklist format
             if checklist_type == 'ITS':

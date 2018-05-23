@@ -17,7 +17,7 @@ import MyExceptions as ME
 __author__ = 'Michael Gruenstaeudl <m.gruenstaeudl@fu-berlin.de>'
 __copyright__ = 'Copyright (C) 2016-2018 Michael Gruenstaeudl'
 __info__ = 'nex2embl'
-__version__ = '2018.05.16.2000'
+__version__ = '2018.05.23.2000'
 
 #############
 # DEBUGGING #
@@ -31,9 +31,54 @@ import pdb
 ###########
 
 
+class Parser:
+    ''' This class contains functions to parse out information from 
+    sequence records.
+    Args:
+        [specific to function]
+    Returns:
+        [specific to function]
+    Raises:
+        -
+    '''
+
+    def __init__(self):
+        pass
+
+    def parse_charset_sym(self, seq_record, sym_keywrds):
+        ''' This function extracts the charset symbols from a sequence record.
+        Args:
+            seq_record (obj)
+            sym_keywrds (list)
+        Returns:
+            charset_syms (list)
+        Raises:
+            -
+        '''
+        gene_quals = [f.qualifiers for f in seq_record.features if not f.type=='source'] # Produces a list of dictionaries
+        charset_syms = []
+        for keyw in sym_keywrds:
+            for dct in gene_quals:
+                try:
+                    charset_syms.extend(dct[keyw])
+                except KeyError:
+                    charset_syms = charset_syms
+        if charset_syms:
+            # 3.1.1. Extract all unique values in list, keep order of original list
+            seen = set()
+            charset_syms = [e for e in charset_syms if e not in seen and not seen.add(e)]
+            # 3.1.2. Remove any multi-word elements
+            charset_syms = [e for e in charset_syms if len(e.split(" "))==1] 
+        if not charset_syms:
+            sys.exit('%s annonex2embl ERROR: Parsing of charset symbol '
+                     'unsuccessful')
+        return charset_syms
+
+
+
 class Writer:
-    ''' This class writes a TSV spreadsheet for a submission via the 
-    WEBIN checklist submission system.
+    ''' This class contains functions to write tab-separated 
+    spreadsheets for submission via the WEBIN checklist submission system.
     Args:
         [specific to function]
     Returns:

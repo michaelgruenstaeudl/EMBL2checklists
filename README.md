@@ -32,7 +32,25 @@ TO DO
 -----
 
 ###### 1. Have the code automatically write the column names in the output
-* See ´examples/Checklists_empty/´ for examples
+* See ´examples/Checklists_empty/´ for examples on what a final (but empty) checklist is supposed to look like
+
+Example:
+After the following code snippet, the variable `out_string` is a tab-delimited table. The output needs to have a standardize name for each column included (i.e., it needs to have a title row). The column names should - for now - be identical to the variable names of `out_list`.
+```
+        out_list = [entrynumber,
+                    organism_name,
+                    env_sam,
+                    gene1,
+                    g1present,
+                    gene2,
+                    g2present,
+                    isolate,
+                    spec_vouch,
+                    country,
+                    sequence
+                    ]
+        out_string = '\t'.join(out_list) + '\n'
+```
 
 ###### 2. An error in processing a sequence should break only the iteration of the loop, not the entire code execution.
 

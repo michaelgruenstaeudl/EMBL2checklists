@@ -13,7 +13,7 @@ def my_test_suite():
 
 setup(
     name='EMBL2checklists',
-    version='0.0.2',
+    version='0.0.3',
     description='Converts EMBL flatfiles to submission checklists (i.e., tab-separated spreadsheets) for submission to ENA',
     long_description=read('README.md'),
     classifiers=[
@@ -30,7 +30,7 @@ setup(
     license='GPLv3',
     packages=['EMBL2checklists'], # So that the subfolder 'EMBL2checklists' is read immediately.
     #packages = find_packages(),
-    install_requires=['biopython', 'unidecode', 'termcolor'],
+    install_requires=['biopython'],
     scripts=glob.glob('scripts/*'),
     test_suite='setup.my_test_suite',
     include_package_data=True,

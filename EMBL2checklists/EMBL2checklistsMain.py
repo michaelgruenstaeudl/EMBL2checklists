@@ -14,7 +14,6 @@ import sys
 import os
 
 from Bio import SeqIO
-from termcolor import colored
 
 # Add specific directory to sys.path in order to import its modules
 # NOTE: THIS RELATIVE IMPORTING IS AMATEURISH.

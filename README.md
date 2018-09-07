@@ -1,10 +1,14 @@
 *EMBL2checklists*
 ===================
-Converts EMBL flatfiles to submission checklists (i.e., tab-separated spreadsheets) for submission to [ENA](http://www.ebi.ac.uk/ena) via the [Webin submission system](https://www.ebi.ac.uk/ena/submit/sra/#home).
+Converts EMBL-formatted flatfiles to submission checklists (i.e., tab-separated spreadsheets) for submission to [ENA](http://www.ebi.ac.uk/ena) via the interactive [Webin submission system](https://www.ebi.ac.uk/ena/submit/sra/#home).
 
 INPUT
 -----
 * EMBL-formatted flatfile
+
+OUTPUT
+------
+* tab-separated spreadsheets ("checklists")
 
 PREREQUISITES
 -------------
@@ -36,7 +40,7 @@ python2 scripts/EMBL2checklists_CMD.py
 CHANGELOG
 ---------
 ###### Version 0.0.3 (2018.09.07)
-* Various improvements of Python code
+* Various improvements of code
 * GUI written by Yannick Hartmaring
 ###### Version 0.0.2 (2018.05.22)
 * Generated separate function to extract charset symbols

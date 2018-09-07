@@ -12,7 +12,7 @@ def my_test_suite():
     return test_suite
 
 setup(
-    name='embl2enachecklists',
+    name='EMBL2checklists',
     version='0.0.2',
     description='Converts EMBL flatfiles to submission checklists (i.e., tab-separated spreadsheets) for submission to ENA',
     long_description=read('README.md'),
@@ -24,11 +24,11 @@ setup(
         'Topic :: Scientific/Engineering :: Bio-Informatics'
         ],
     keywords='DNA sequence submission to ENA',
-    url='https://github.com/michaelgruenstaeudl/embl2enachecklists',
+    url='https://github.com/michaelgruenstaeudl/EMBL2checklists',
     author='Michael Gruenstaeudl',
     author_email='m.gruenstaeudl@fu-berlin.de',
     license='GPLv3',
-    packages=['embl2enachecklists'], # So that the subfolder 'embl2enachecklists' is read immediately.
+    packages=['EMBL2checklists'], # So that the subfolder 'EMBL2checklists' is read immediately.
     #packages = find_packages(),
     install_requires=['biopython', 'unidecode', 'termcolor'],
     scripts=glob.glob('scripts/*'),

@@ -72,13 +72,13 @@ if __name__ == '__main__':
             if len(GlobVars.warnings) != 0:
                 for warning in GlobVars.warnings:
                     print warning
-            print 'Done! :D You can find your output here: ' + args.outfile
+            print "Process complete.\nOutput location: " + args.outfile
         elif args.infile.split('.')[-1] == 'gb':
             E2C.EMBL2checklists(args.infile, args.outfile, 'gb', args.cltype, args.environmental)
             if len(GlobVars.warnings) != 0:
                 for warning in GlobVars.warnings:
                     print warning
-            print 'Done! :D You can find your output here: ' + args.outfile
+            print "Process complete.\nOutput location: " + args.outfile
         else:
             raise ME.WrongInputFile('Error: ' + args.infile + ' is not in embl format')
     except Exception as error:

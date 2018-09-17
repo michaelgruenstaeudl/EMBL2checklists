@@ -17,7 +17,7 @@ __author__ = 'Michael Gruenstaeudl <m.gruenstaeudl@fu-berlin.de>,\
               Yannick Hartmaring <yanjo@zedat.fu-berlin.de>'
 __copyright__ = 'Copyright (C) 2016-2018 Michael Gruenstaeudl'
 __info__ = 'EMBL2checklists'
-__version__ = '2018.09.07.1900'
+__version__ = '2018.09.17.1500'
 
 #############
 # DEBUGGING #
@@ -215,14 +215,13 @@ class Parser:
             try:
                 outdict["gene"] = [f.qualifiers['gene'] for f in seq_record.features if f.type=='gene'][0][0]
             except:
-                try:
-                    outdict["gene"] = [f.qualifiers['gene'] for f in seq_record.features if f.type=='CDS'][0][0]
-                except:
-                    GlobVars.warnings.append('Warning: The mandatory feature "%s" in "%s" is missing.' % ('gene', seq_record.id))
-                    return False
+                GlobVars.warnings.append('Warning: The mandatory feature "%s" in "%s" is missing.' % ('gene', seq_record.id))
+                return False
+            # INTRON
             try:
                 intron = [f for f in seq_record.features if f.type=='intron'][0]
             except:
+                GlobVars.warnings.append('Warning: The mandatory feature "%s" in "%s" is missing.' % ('intron', seq_record.id))
                 return False
             # 5' PARTIAL
             if type(intron.location.start) == Bio.SeqFeature.ExactPosition:
@@ -315,7 +314,7 @@ class Parser:
                 GlobVars.warnings.append('Warning: The mandatory feature "%s" in "%s" is missing.' % ('sequence', seq_record.id))
                 return False
 
-## CHECKLIST: RRNA ##
+## CHECKLIST: rRNA ##
 #####################
         elif checklist_type == 'rRNA':
             # ENTRYNUMBER
@@ -366,37 +365,84 @@ class Parser:
                 except:
                     GlobVars.warnings.append('Warning: The mandatory feature "%s" in "%s" is missing.' % ('isolation_source', seq_record.id))
                     return False
-            # 18S, ITS1, ITS2, 28S
+            ## 18S, 26S/28S
+            #try:
+            #    rRNA_features_list = sum([f.qualifiers['gene'] for f in seq_record.features if f.type=='rRNA'], [])
+            #    rRNA_features = " ".join(rRNA_features_list)
+            #    # 18S
+            #    if '18S' in rRNA_features:
+            #        outdict["RNA_18S"] = 'partial'
+            #    else:
+            #        outdict["RNA_18S"] = 'no'
+            #    # 26S/28S
+            #    if '28S' in rRNA_features or '26S' in rRNA_features:
+            #        outdict["RNA_28S"] = 'partial'
+            #    else:
+            #        outdict["RNA_28S"] = 'no'
+            #except:
+            #    outdict["RNA_18S"] = 'no'
+            #    outdict["RNA_28S"] = 'no'
+            ## ITS1, ITS2
+            #try:
+            #    ITS_features_list = sum([f.qualifiers['note'] for f in seq_record.features if f.type=='misc_feature'], [])
+            #    ITS_features = " ".join(ITS_features_list)
+            #    # ITS1
+            #    if 'ITS1' in ITS_features and '18S' in rRNA_features:
+            #        outdict["ITS1_feat"] = 'complete'
+            #    else:
+            #        outdict["ITS1_feat"] = 'partial'
+            #    # ITS2
+            #    if 'ITS' in ITS_features and ('28S' in rRNA_features or '26S' in rRNA_features):
+            #        outdict["ITS2_feat"] = 'complete'
+            #    else:
+            #        outdict["ITS2_feat"] = 'partial'
+            #except:
+            #    GlobVars.warnings.append('Warning: The mandatory feature combination "%s" in "%s" is missing.' % ('either #rRNA for 18S and 26S/28S, or misc_feature for ITS1 and ITS2', seq_record.id))
+            #    return False
+
+            # 18S, 26S/28S
             try:
-                gene_seqrec_features = " ".join([f.qualifiers['gene'] for f in seq_record.features if f.type=='rRNA'][0])
-                # 18S ITS1
-                if '18S' in gene_seqrec_features:
-                    outdict["RNA_18S"] = 'partial'
-                    outdict["ITS1_feat"] = 'complete'
+                rRNA_features_list = sum([f.qualifiers['gene'] for f in seq_record.features if f.type=='rRNA'], [])
+                rRNA_features = " ".join(rRNA_features_list)
+                # 18S
+                if '18S' in rRNA_features:
+                    outdict["RNA_18S"] = 'yes'
                 else:
                     outdict["RNA_18S"] = 'no'
-                    outdict["ITS1_feat"] = 'partial'
-                # 28S ITS2
-                if '28S' in gene_seqrec_features or '26S' in gene_seqrec_features:
-                    outdict["RNA_28S"] = 'partial'
-                    outdict["ITS2_feat"] = 'complete'
+                # 26S/28S
+                if '28S' in rRNA_features or '26S' in rRNA_features:
+                    outdict["RNA_28S"] = 'yes'
                 else:
                     outdict["RNA_28S"] = 'no'
-                    outdict["ITS2_feat"] = 'partial'
             except:
                 outdict["RNA_18S"] = 'no'
-                outdict["ITS1_feat"] = 'partial'
                 outdict["RNA_28S"] = 'no'
-                outdict["ITS2_feat"] = 'partial'
-            # 5.8S
+            # ITS1, ITS2
             try:
-                note_seqrec_features = " ".join([f.qualifiers['note'] for f in seq_record.features if f.type=='misc_feature'][0])
-                if 'ITS1' in note_seqrec_features and 'ITS2' in note_seqrec_features:
-                    outdict["RNA_58S"] = 'complete'
+                ITS_features_list = sum([f.qualifiers['note'] for f in seq_record.features if f.type=='misc_feature'], [])
+                ITS_features = " ".join(ITS_features_list)
+                # ITS1
+                if 'ITS1' in ITS_features or '18S' in rRNA_features:
+                    outdict["ITS1_feat"] = 'yes'
                 else:
-                    outdict["RNA_58S"] = 'partial'
+                    outdict["ITS1_feat"] = 'no'
+                # ITS2
+                if 'ITS' in ITS_features or ('28S' in rRNA_features or '26S' in rRNA_features):
+                    outdict["ITS2_feat"] = 'yes'
+                else:
+                    outdict["ITS2_feat"] = 'no'
             except:
-                outdict["RNA_58S"] = 'partial'
+                GlobVars.warnings.append('Warning: The mandatory feature combination "%s" in "%s" is missing.' % ('either rRNA for 18S and 26S/28S, or misc_feature for ITS1 and ITS2', seq_record.id))
+                return False
+            # 5.8S # Note: The completeness of the rDNA gene 5.8S is inferred based on the presence of ITS1 and ITS2.
+            if '5.8S' in rRNA_features:
+                outdict["RNA_58S"] = 'yes'
+            elif 'ITS1' in ITS_features and 'ITS2' in ITS_features:
+                outdict["RNA_58S"] = 'yes'
+            elif '28S' in rRNA_features and '26S' in rRNA_features:
+                outdict["RNA_58S"] = 'yes'
+            else:
+                outdict["RNA_58S"] = 'no'
             # SEQUENCE
             try:
                 outdict["sequence"] = str(seq_record.seq)

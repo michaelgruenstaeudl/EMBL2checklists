@@ -276,11 +276,11 @@ class GUI():
         doneWindow.configure(background=GlobVars.bg)
 
         #Label
-        doneLabel = tk.Label(master = doneWindow, text = "Done! :D\n You can find your output here: " + self.outFile.get(), background = GlobVars.bg, foreground = GlobVars.fg)
+        doneLabel = tk.Label(master = doneWindow, text = "Process complete.\nOutput location: " + self.outFile.get(), background = GlobVars.bg, foreground = GlobVars.fg)
         doneLabel.place(x=10, y=10, width=400, height=40)
 
         #Button
-        doneButton = tk.Button(master = doneWindow, text="Nice", command=doneWindow.destroy, background = GlobVars.buttonbg, foreground = GlobVars.buttonfg)
+        doneButton = tk.Button(master = doneWindow, text="Done.", command=doneWindow.destroy, background = GlobVars.buttonbg, foreground = GlobVars.buttonfg)
         doneButton.place(x=160, y=60, width=110, height=40)
 
 ########

@@ -375,15 +375,9 @@ class Parser:
             # MATK GENE
             try:
                 gene_features = Parser().extract_features_by_type(seq_record.features, "gene")
-                try:
-                    matK_gene = [f for f in gene_features if 'matK' in f.qualifiers['gene']][0]
-                except:
-                    try:
-                        matK_gene = [f for f in gene_features if 'matK' in f.qualifiers['note']][0]
-                    except:
-                        raise Exception
+                matK_gene = [f for f in gene_features if 'matK' in f.qualifiers['note']][0]
             except:
-                GlobVars.warnings.append('WARNING: The mandatory feature ´%s´ is missing from record ´%s´.' % ('matK', seq_record.id))
+                GlobVars.warnings.append('WARNING: The mandatory feature ´%s´ for matK with qualifier ´%s´ is missing from record ´%s´.' % ('gene', 'note', seq_record.id))
                 return False
 
             # 5'_CDS, 3'_CDS, 5'_PARTIAL and 3'_PARTIAL

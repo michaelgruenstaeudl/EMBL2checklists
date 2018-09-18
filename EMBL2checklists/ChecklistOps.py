@@ -249,39 +249,45 @@ class Parser:
             # SEQUENCE
             outdict["sequence"] = Parser().extract_sequence(seq_record)
             
-            # GENE1 and GENE2
-            misc_qualifiers = []
+            # IGS
             try:
                 misc_features = Parser().extract_features_by_type(seq_record.features, "misc_feature")
-                misc_qualifiers = Parser().extract_qualifier_info(gene_features, "product")
+                misc_qualifiers = Parser().extract_qualifier_info(misc_features, "product")
             except:
                 GlobVars.warnings.append('WARNING: The mandatory feature ´%s´ is missing from record ´%s´.' % ('misc_feature', seq_record.id))
                 return False
-
-            # GENE1 and G1PRESENT
+            # GENES
             try:
-                try:
-                    outdict["gene1"] = [f.qualifiers['gene'] for f in seq_record.features if f.type=='gene'][0][0]
-                    outdict["g1present"] = 'yes'
-                except:
-                    outdict['gene1'] = 'placeholder'
-                    outdict["g1present"] = 'no'
+                gene_features = Parser().extract_features_by_type(seq_record.features, "gene")
+                gene_qualifiers = Parser().extract_qualifier_info(gene_features, "note")
             except:
-                GlobVars.warnings.append('WARNING: The mandatory feature ´%s´ is missing from record ´%s´.' % ('gene1, g1present', seq_record.id))
+                GlobVars.warnings.append('WARNING: The feature ´%s´ is missing from record ´%s´.' % ('gene', seq_record.id))
                 return False
-            # GENE2 and G2PRESENT
+
+            # GENE1, G1PRESENT and GENE2, G2PRESENT
             try:
-                try:
-                    outdict["gene2"] = [f.qualifiers['gene'] for f in seq_record.features if f.type=='gene'][1][0]
+                IGS_qualifier = [i for i in misc_qualifiers.split() if "-" in i][0]
+                gene1 = IGS_qualifier.split('-')[0]
+                gene2 = IGS_qualifier.split('-')[1]
+                outdict["gene1"] = gene1
+                outdict["gene2"] = gene2
+            except:
+                GlobVars.warnings.append('WARNING: Parsing of ´%s´ from record ´%s´ was unsuccessful.' % ('the intergenic spacer qualifier', seq_record.id))
+                return False
+            try:
+                if gene1 in gene_qualifiers:
+                    outdict["g1present"] = 'yes'
+                else:
+                    outdict["g1present"] = 'no'
+                if gene2 in gene_qualifiers:
                     outdict["g2present"] = 'yes'
-                except:
-                    outdict['gene2'] = 'placeholder'
+                else:
                     outdict["g2present"] = 'no'
             except:
-                GlobVars.warnings.append('WARNING: The mandatory feature ´%s´ is missing from record ´%s´.' % ('gene2, g2present', seq_record.id))
+                GlobVars.warnings.append('WARNING: No genes detected to parse from record ´%s´.' % (seq_record.id))
                 return False
 
-
+                
 ## CHECKLIST: GENE_INTRON ##
 ############################
         elif checklist_type == 'gene_intron':
@@ -296,36 +302,39 @@ class Parser:
 
             # GENE
             try:
-                outdict["gene"] = [f.qualifiers['gene'] for f in seq_record.features if f.type=='gene'][0][0]
+                gene_features = Parser().extract_features_by_type(seq_record.features, "gene")
+                outdict["gene"] = [f.qualifiers['gene'] for f in gene_features][0][0]
             except:
                 GlobVars.warnings.append('WARNING: The mandatory feature ´%s´ is missing from record ´%s´.' % ('gene', seq_record.id))
                 return False
-
             # INTRON
             try:
-                intron = [f for f in seq_record.features if f.type=='intron'][0]
+                intron_features = Parser().extract_features_by_type(seq_record.features, "intron")
+                intron = [f for f in intron_features][0]
             except:
                 GlobVars.warnings.append('WARNING: The mandatory feature ´%s´ is missing from record ´%s´.' % ('intron', seq_record.id))
                 return False
-            # 5' PARTIAL
-            if type(intron.location.start) == Bio.SeqFeature.ExactPosition:
-                outdict["fiveprime_partial"] = 'no'
-            if type(intron.location.start) == Bio.SeqFeature.BeforePosition:
-                outdict["fiveprime_partial"] = 'yes'
-            # 3' PARTIAL
-            if type(intron.location.end) == Bio.SeqFeature.ExactPosition:
-                outdict["threeprime_partial"] = 'no'
-            if type(intron.location.end) == Bio.SeqFeature.AfterPosition:
-                outdict["threeprime_partial"] = 'yes'
-            # 5' INTRON
-            outdict["fiveprime_cds"] = str(intron.location.start.position+1)
-            # 3' INTRON
-            outdict["threeprime_cds"] = str(intron.location.end.position)
-            # NUMBER
+
+            # 5' PARTIAL, 3' PARTIAL, 5' INTRON, 3' INTRON
             try:
-                outdict["number"] = [f.qualifiers['number'] for f in seq_record.features if f.type=='intron'][0][0]
+                if type(intron.location.start) == Bio.SeqFeature.ExactPosition:
+                    outdict["fiveprime_partial"] = 'no'
+                if type(intron.location.start) == Bio.SeqFeature.BeforePosition:
+                    outdict["fiveprime_partial"] = 'yes'
+                if type(intron.location.end) == Bio.SeqFeature.ExactPosition:
+                    outdict["threeprime_partial"] = 'no'
+                if type(intron.location.end) == Bio.SeqFeature.AfterPosition:
+                    outdict["threeprime_partial"] = 'yes'
+                outdict["fiveprime_cds"] = str(intron.location.start.position+1)
+                outdict["threeprime_cds"] = str(intron.location.end.position)
             except:
-                GlobVars.warnings.append('WARNING: The mandatory feature ´%s´ is missing from record ´%s´.' % ('intron', seq_record.id))
+                GlobVars.warnings.append('WARNING: The parsing of ´%s´ from record ´%s´ was unsuccessful.' % ("the 5' and the 3' location information", seq_record.id))
+                return False
+            # INTRON NUMBER
+            try:
+                outdict["number"] = [f.qualifiers['number'] for f in intron_features][0][0]
+            except:
+                GlobVars.warnings.append('WARNING: The parsing of ´%s´ from record ´%s´ was unsuccessful.' % ("the intron number", seq_record.id))
                 return False
 
 
@@ -342,7 +351,6 @@ class Parser:
             outdict["sequence"] = Parser().extract_sequence(seq_record)
             
             # TRNK_INTRON
-            intron_qualifiers, tRNA_qualifiers = [], []
             try:
                 intron_features = Parser().extract_features_by_type(seq_record.features, "intron")
                 intron_qualifiers = Parser().extract_qualifier_info(intron_features, "gene")
@@ -353,15 +361,18 @@ class Parser:
                 except:
                     GlobVars.warnings.append("WARNING: The mandatory feature combination of ´%s´ is missing from record ´%s´." % ("either an intron feature or a tRNA feature for trnK", seq_record.id))
                     return False
-            if 'trnK' in intron_qualifiers:
-                outdict['trnK_intron_present'] = 'yes'
-            elif 'trnK' in tRNA_qualifiers:
-                outdict['trnK_intron_present'] = 'yes'
-            else:
-                outdict['trnK_intron_present'] = 'no'
+            try:
+                if 'trnK' in intron_qualifiers:
+                    outdict['trnK_intron_present'] = 'yes'
+                elif 'trnK' in tRNA_qualifiers:
+                    outdict['trnK_intron_present'] = 'yes'
+                else:
+                    outdict['trnK_intron_present'] = 'no'
+            except:
+                GlobVars.warnings.append('WARNING: The parsing of ´%s´ from record ´%s´ was unsuccessful.' % ("the trnK intron", seq_record.id))
+                return False
 
             # MATK GENE
-            matK_gene = None
             try:
                 gene_features = Parser().extract_features_by_type(seq_record.features, "gene")
                 try:
@@ -374,7 +385,7 @@ class Parser:
             except:
                 GlobVars.warnings.append('WARNING: The mandatory feature ´%s´ is missing from record ´%s´.' % ('matK', seq_record.id))
                 return False
-                
+
             # 5'_CDS, 3'_CDS, 5'_PARTIAL and 3'_PARTIAL
             try:
                 # 5'_CDS and 5'_PARTIAL
@@ -395,7 +406,7 @@ class Parser:
                 if type(matK_gene.location.end) == Bio.SeqFeature.AfterPosition:
                     outdict["threeprime_partial"] = 'yes'
             except:
-                GlobVars.warnings.append('WARNING: The mandatory feature ´%s´ is missing from record ´%s´.' % ('matK', seq_record.id))
+                GlobVars.warnings.append('WARNING: The parsing of ´%s´ from record ´%s´ was unsuccessful.' % ("the 5' and the 3' location information", seq_record.id))
                 return False
 
 
@@ -410,13 +421,36 @@ class Parser:
             outdict["env_sample"] = env_sample
             # SEQUENCE
             outdict["sequence"] = Parser().extract_sequence(seq_record)
-            
-            # SEDIMENT # sediment can also occur in the qualifiers: sediment, gene and note
+            # SEDIMENT
             try:
-                outdict["sediment"] = [f.qualifiers['product'] for f in seq_record.features if f.type == 'rRNA'][0][0]
+                rRNA_features = Parser().extract_features_by_type(seq_record.features, "rRNA")
+                sediment_info = [f.qualifiers['product'] for f in rRNA_features][0][0]
             except:
-                GlobVars.warnings.append('WARNING: The mandatory feature ´%s´ is missing from record ´%s´.' % ('sediment', seq_record.id))
+                GlobVars.warnings.append('WARNING: The mandatory feature ´%s´ is missing from record ´%s´.' % ('rRNA', seq_record.id))
                 return False
+            try:
+                if '5S' in sediment_info:
+                    outdict["sediment"] = '5S'
+                if '5.8S' in sediment_info:
+                    outdict["sediment"] = '5.8S'
+                if '12S' in sediment_info:
+                    outdict["sediment"] = '12S'
+                if '16S' in sediment_info:
+                    outdict["sediment"] = '16S'
+                if '18S' in sediment_info:
+                    outdict["sediment"] = '18S'
+                if '23S' in sediment_info:
+                    outdict["sediment"] = '23S'
+                if '25S' in sediment_info:
+                    outdict["sediment"] = '25S'
+                if '26S' in sediment_info:
+                    outdict["sediment"] = '26S'
+                if '28S' in sediment_info:
+                    outdict["sediment"] = '28S'
+            except:
+                GlobVars.warnings.append('WARNING: No sediment info parsed from record ´%s´.' % (seq_record.id))
+                return False
+
 
 ## CHECKLIST: ITS ##
 ####################
@@ -431,49 +465,14 @@ class Parser:
             outdict["sequence"] = Parser().extract_sequence(seq_record)
             
             # ISOLATION_SOURCE
-            if env_sample == 'yes':
-                try:
-                    outdict["isolation_source"] = [f.qualifiers['isolation_source'] for f in seq_record.features if f.type=='source'][0][0]
-                except:
-                    GlobVars.warnings.append('WARNING: The mandatory source-qualifier ´%s´ is missing from record ´%s´.' % ('isolation_source', seq_record.id))
-                    return False
-            ## 18S, 26S/28S
-            #try:
-            #    rRNA_qualifiers_list = sum([f.qualifiers['gene'] for f in seq_record.features if f.type=='rRNA'], [])
-            #    rRNA_qualifiers = " ".join(rRNA_qualifiers_list)
-            #    # 18S
-            #    if '18S' in rRNA_qualifiers:
-            #        outdict["RNA_18S"] = 'partial'
-            #    else:
-            #        outdict["RNA_18S"] = 'no'
-            #    # 26S/28S
-            #    if '28S' in rRNA_qualifiers or '26S' in rRNA_qualifiers:
-            #        outdict["RNA_28S"] = 'partial'
-            #    else:
-            #        outdict["RNA_28S"] = 'no'
-            #except:
-            #    outdict["RNA_18S"] = 'no'
-            #    outdict["RNA_28S"] = 'no'
-            ## ITS1, ITS2
-            #try:
-            #    ITS_qualifiers_list = sum([f.qualifiers['note'] for f in seq_record.features if f.type=='misc_RNA'], [])
-            #    ITS_features = " ".join(ITS_qualifiers_list)
-            #    # ITS1
-            #    if 'ITS1' in ITS_features and '18S' in rRNA_qualifiers:
-            #        outdict["ITS1_feat"] = 'complete'
-            #    else:
-            #        outdict["ITS1_feat"] = 'partial'
-            #    # ITS2
-            #    if 'ITS' in ITS_features and ('28S' in rRNA_qualifiers or '26S' in rRNA_qualifiers):
-            #        outdict["ITS2_feat"] = 'complete'
-            #    else:
-            #        outdict["ITS2_feat"] = 'partial'
-            #except:
-            #    GlobVars.warnings.append('WARNING: The mandatory feature combination of ´%s´ in ´%s´ is missing.' % ('either #rRNA for 18S and 26S/28S, or misc_RNA for ITS1 and ITS2', seq_record.id))
-            #    return False
+            try:
+                source_features = Parser().extract_features_by_type(seq_record.features, "source")
+                outdict["isolation_source"] = [f.qualifiers['isolation_source'] for f in source_features][0][0]
+            except:
+                GlobVars.warnings.append('WARNING: The mandatory source-qualifier ´%s´ is missing from record ´%s´.' % ('isolation_source', seq_record.id))
+                return False
 
             # 18S, 26S/28S, ITS1, ITS2
-            rRNA_qualifiers, ITS_features = [], []
             try:
                 rRNA_features = Parser().extract_features_by_type(seq_record.features, "rRNA")
                 rRNA_qualifiers = Parser().extract_qualifier_info(rRNA_features, "gene")
@@ -484,35 +483,40 @@ class Parser:
                 except:
                     GlobVars.warnings.append('WARNING: The mandatory feature combination of ´%s´ in ´%s´ is missing.' % ('either rRNA for 18S and 26S/28S, or misc_RNA for ITS1 and ITS2', seq_record.id))
                     return False
-            # 18S
-            if '18S' in rRNA_qualifiers:
-                outdict["RNA_18S"] = 'yes'
-            else:
-                outdict["RNA_18S"] = 'no'
-            # 26S/28S
-            if '28S' in rRNA_qualifiers or '26S' in rRNA_qualifiers:
-                outdict["RNA_28S"] = 'yes'
-            else:
-                outdict["RNA_28S"] = 'no'
-            # ITS1
-            if 'ITS1' in ITS_features or '18S' in rRNA_qualifiers:
-                outdict["ITS1_feat"] = 'yes'
-            else:
-                outdict["ITS1_feat"] = 'no'
-            # ITS2
-            if 'ITS' in ITS_features or ('28S' in rRNA_qualifiers or '26S' in rRNA_qualifiers):
-                outdict["ITS2_feat"] = 'yes'
-            else:
-                outdict["ITS2_feat"] = 'no'
-            # 5.8S # Note: The completeness of the rDNA gene 5.8S is inferred based on the presence of ITS1 and ITS2.
-            if '5.8S' in rRNA_qualifiers:
-                outdict["RNA_58S"] = 'yes'
-            elif 'ITS1' in ITS_features and 'ITS2' in ITS_features:
-                outdict["RNA_58S"] = 'yes'
-            elif '28S' in rRNA_qualifiers and '26S' in rRNA_qualifiers:
-                outdict["RNA_58S"] = 'yes'
-            else:
-                outdict["RNA_58S"] = 'no'
+            # ETS
+            try:
+                # 18S
+                if '18S' in rRNA_qualifiers:
+                    outdict["RNA_18S"] = 'yes'
+                else:
+                    outdict["RNA_18S"] = 'no'
+                # 26S/28S
+                if '28S' in rRNA_qualifiers or '26S' in rRNA_qualifiers:
+                    outdict["RNA_28S"] = 'yes'
+                else:
+                    outdict["RNA_28S"] = 'no'
+                # ITS1
+                if 'ITS1' in ITS_features or '18S' in rRNA_qualifiers:
+                    outdict["ITS1_feat"] = 'yes'
+                else:
+                    outdict["ITS1_feat"] = 'no'
+                # ITS2
+                if 'ITS' in ITS_features or ('28S' in rRNA_qualifiers or '26S' in rRNA_qualifiers):
+                    outdict["ITS2_feat"] = 'yes'
+                else:
+                    outdict["ITS2_feat"] = 'no'
+                # 5.8S # Note: The completeness of the rDNA gene 5.8S is inferred based on the presence of ITS1 and ITS2.
+                if '5.8S' in rRNA_qualifiers:
+                    outdict["RNA_58S"] = 'yes'
+                elif 'ITS1' in ITS_features and 'ITS2' in ITS_features:
+                    outdict["RNA_58S"] = 'yes'
+                elif '28S' in rRNA_qualifiers and '26S' in rRNA_qualifiers:
+                    outdict["RNA_58S"] = 'yes'
+                else:
+                    outdict["RNA_58S"] = 'no'
+            except:
+                GlobVars.warnings.append('WARNING: The parsing of ´%s´ from record ´%s´ was unsuccessful.' % ("the rDNA type", seq_record.id))
+                return False
 
 
 ## CHECKLIST: ETS ##
@@ -528,7 +532,6 @@ class Parser:
             outdict["sequence"] = Parser().extract_sequence(seq_record)
             
             # INFER ETS TYPE
-            rRNA_qualifiers, ETS_qualifiers = [], []
             try:
                 rRNA_features = Parser().extract_features_by_type(seq_record.features, "rRNA")
                 rRNA_qualifiers = Parser().extract_qualifier_info(rRNA_features, "gene")
@@ -540,17 +543,22 @@ class Parser:
                     GlobVars.warnings.append("WARNING: The mandatory feature combination of ´%s´ is missing from record ´%s´." % ("either an rRNA feature for 18S or 26S/28S, or a misc_RNA for 5'ETS or 3'ETS", seq_record.id))
                     return False
             # ETS
-            if '18S' in rRNA_qualifiers:
-                outdict["ets_type"] = "5'"
-            elif '26S' in rRNA_qualifiers or '28S' in rRNA_qualifiers:
-                outdict["ets_type"] = "3'"
-            else:
-                if "ETS" in ETS_qualifiers and "5'" in ETS_qualifiers:
+            try:
+                if '18S' in rRNA_qualifiers:
                     outdict["ets_type"] = "5'"
-                if "ETS" in ETS_qualifiers and "3'" in ETS_qualifiers:
+                elif '26S' in rRNA_qualifiers or '28S' in rRNA_qualifiers:
                     outdict["ets_type"] = "3'"
                 else:
-                    outdict["ets_type"] = "5'"
+                    if "ETS" in ETS_qualifiers and "5'" in ETS_qualifiers:
+                        outdict["ets_type"] = "5'"
+                    if "ETS" in ETS_qualifiers and "3'" in ETS_qualifiers:
+                        outdict["ets_type"] = "3'"
+                    else:
+                        outdict["ets_type"] = "5'"
+            except:
+                GlobVars.warnings.append('WARNING: The parsing of ´%s´ from record ´%s´ was unsuccessful.' % ("the ETS type", seq_record.id))
+                return False
+
 
 ## RETURN OUTDICT
         return outdict

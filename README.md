@@ -16,10 +16,10 @@ EXAMPLE USAGE
 -------------
 #### Commandline Interface
 ```
-python2 scripts/EMBL2checklists_CMD.py
--i example/example_trnKmatK.embl
--o example/example_trnKmatK.tsv
--c trnK_matK
+python2 scripts/EMBL2checklists_CMD.py \
+-i example/example_trnKmatK.embl \
+-o example/example_trnKmatK.tsv \
+-c trnK_matK \
 -e no
 ```
 #### GUI Interface

@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 '''
 Setting global variables.
 '''
@@ -16,7 +17,7 @@ __author__ = 'Michael Gruenstaeudl <m.gruenstaeudl@fu-berlin.de>,\
               Yannick Hartmaring <yanjo@zedat.fu-berlin.de>'
 __copyright__ = 'Copyright (C) 2016-2018 Michael Gruenstaeudl'
 __info__ = 'EMBL2checklists'
-__version__ = '2018.09.07.1900'
+__version__ = '2018.09.17.2300'
 
 #############
 # DEBUGGING #
@@ -27,20 +28,23 @@ import pdb
 #############
 # VARIABLES #
 #############
-warnings = []
-bg = "#93BDAC"
-buttonbg = "white"
-entrybg = "white"
-fg = "black"
-buttonfg = "black"
-entryfg = "black"
 
-allowed_marker_abbrev = ['ITS','ITS1','ITS2','18S','28S','trnK','matK','IGS','genomic_CDS','trnL','trnF','ETS','gene','intron']
-allowed_rrna_marker_abbrev = ['18S','28S']
-allowed_its_marker_abbrev = ['ITS','ITS1','ITS2']
-allowed_gene_intron_abbrev = ['gene','intron']
-genomic_CDS_marker_abbrev = ['gene','CDS']
-allowed_checklists = ['ITS','ETS','rRNA','trnK_matK','IGS','genomic_CDS','gene_intron']
+implemented_checklists = ['IGS','gene_intron','trnK_matK','rRNA','ITS','ETS']
+
+warnings = []
+
+keywords_IGS = ['IGS','spacer','intergenic']
+keywords_gene_intron = ['gene','intron']
+keywords_trnKmatK = ['trnK','matK']
+keywords_rRNA = ['18S','28S']
+keywords_ITS = ['ITS','ITS1','ITS2']
+keywords_ETS = ['ETS']
+keywords_allChecklists = keywords_IGS + \
+                         keywords_gene_intron + \
+                         keywords_trnKmatK + \
+                         keywords_rRNA + \
+                         keywords_ITS + \
+                         keywords_ETS
 
 ###########
 # CLASSES #
@@ -84,10 +88,6 @@ class GlobalVariables():
                                    ['cell_type','o'],['host','o'],['lab_host','o'],['fwd_name1','o'],['fwd_seq1','o'],
                                    ['rev_name1','o'],['rev_seq1','o'],['fwd_name2','o'],['fwd_seq2','o'],['rev_name2','o'],
                                    ['rev_seq2','o'],['sequence','m']],
-                    'genomic_CDS':[['entrynumber','o'],['organism','o'],['env_sam','o'],['gene_symbol','o'],['product_name','o'],
-                                   ['transl_table','o'],['fiveprime_cds','o'],['threeprime_cds','o'],['fiveprime_partial','o'],
-                                   ['threeprime_partial','o'],['read_frame','o'],['isolate','o'],['spec_vouch','o'],['country','o'],
-                                   ['ecotype','o'],['sequence','o']],
                             'ETS':[['entrynumber','m'],['organism','m'],['ets_type','m'],['isolate','o'],['clone','o'],
                                    ['strain','o'],['variety','o'],['breed','o'],['ecotype','o'],['mating_type','o'],
                                    ['sex','o'],['isolation_source','o'],['host','o'],['tissue_type','o'],['country','o'],
@@ -137,9 +137,8 @@ class GlobalVariables():
                                    'fwd_name1':'FWD_NAME1','fwd_seq1':'FWD_SEQ1','rev_name1':'REV_NAME1','rev_seq1':'REV_SEQ1',
                                    'fwd_name2':'FWD_NAME2','fwd_seq2':'FWD_SEQ2','rev_name2':'REV_NAME2','rev_seq2':'REV_SEQ2',
                                    'sequence':'SEQUENCE'},
-                    'genomic_CDS':{},
                             'ETS':{'entrynumber':'ENTRYNUMBER','organism':'ORGANISM_NAME','ets_type':'ETS_TYPE','isolate':'ISOLATE',
-                                   'clone':'CLONE','strain':'STRAIN','variety':'VARIETY','cultivar':'CULTIVAR','breed':'BREED',
+                                   'clone':'CLONE','strain':'STRAIN','variety':'VARIETY','cultivar':'CULTIVAR','breed':'BREED', 'culture_collection':'CULT_COLL',
                                    'ecotype':'ECOTYPE','mating_type':'MATING_TYPE','sex':'SEX','isolation_source':'ISOLATION_SOURCE',
                                    'host':'HOST','tissue_type':'TISSUE','country':'COUNTRY','locality':'LOCALITY','lat_lon':'LAT_LON',
                                    'collection_date':'COLDATE','collected_by':'COL_BY','specimen_voucher':'SPEC_VOUCH','bio_material':'BIO_MAT',
@@ -168,9 +167,9 @@ class GlobalVariables():
             checklist_type [string]
             needed [string]: 'o' for optional, 'm' manatory and 'om' for both
         Returns:
-            (lsit)
+            (list)
         Raises:
-            CheckListTypeNotKnownError occurs if the checklist type is not mention
+            ChecklistTypeUnknown occurs if the checklist type is not mention
             in this function
         """
         qualifiers = []

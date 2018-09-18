@@ -1,4 +1,5 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 '''
 EMBL2checklists GUI
 '''
@@ -20,15 +21,26 @@ import MyExceptions as ME
 ###############
 # AUTHOR INFO #
 ###############
-__author__ = 'Yannick Hartmaring <yanjo@zedat.fu-berlin.de>'
-__info__ = 'EMBL2checklists'
-__version__ = '2018.09.07.1900'
+__author__ =  'Yannick Hartmaring <yanjo@zedat.fu-berlin.de>,\
+               Michael Gruenstaeudl <m.gruenstaeudl@fu-berlin.de>'
+__info__ =    'EMBL2checklists'
+__version__ = '2018.09.17.1900'
 
 #############
 # DEBUGGING #
 #############
 import pdb
 # pdb.set_trace()
+
+#############
+# VARIABLES #
+#############
+generalBG = "#93BDAC"
+buttonBG = "white"
+entryBG = "white"
+generalFG = "black"
+buttonFG = "black"
+entryFG = "black"
 
 ###########
 # CLASSES #
@@ -39,9 +51,9 @@ class GUI():
 
 ## WINDOW ##
         self.window = tk.Tk()
-        self.window.title("embl2enachecklist")
+        self.window.title("EMBL2checklists")
         self.window.geometry("460x400")
-        self.window.configure(background=GlobVars.bg)
+        self.window.configure(background=generalBG)
 
 ## VARIABLES ##
         self.outFile = tk.StringVar()
@@ -49,9 +61,14 @@ class GUI():
         self.outFile.set("")
         self.isEnv = 'no'
         self.inFile.set("")
-        self.data = GlobVars.allowed_checklists
+        self.data = GlobVars.implemented_checklists
 
-        self.checklistHelper = {'ITS':'For ITS rDNA region. This checklist allows generic annotation of the ITS components (18S rRNA, ITS1, 5.8S rRNA, ITS2 and 28S rRNA). For annotation of the rRNA component only, please use the rRNA gene checklist.',
+        self.checklistHelper = {'ITS':'For ITS rDNA region. This checklist'
+                                      + ' allows generic annotation of the ITS'
+                                      + ' components (18S rRNA, ITS1, 5.8S rRNA,'
+                                      + ' ITS2 and 28S rRNA). For annotation of'
+                                      + ' the rRNA component only, please use'
+                                      + ' the rRNA gene checklist.',
                                 'IGS':'For intergenic spacer (IGS) sequences'
                                       + ' between neighbouring genes (e.g.,'
                                       + ' psbA-trnH IGS, 16S-23S rRNA IGS).'
@@ -69,13 +86,12 @@ class GUI():
                                       + ' DNA. All rRNAs are considered'
                                       + ' partial.',
                         'gene_intron':'For complete or partial single gene'
-                                      + ' intron.',
-                        'genomic_CDS':'Not implemented yet'
+                                      + ' intron.'
                                     }
 
         self.clType = tk.StringVar()
         self.clType.set('ITS')
-        self.checklistLabel = tk.Message(text = self.checklistHelper[self.clType.get()], width=320, background = GlobVars.bg, foreground = GlobVars.fg, anchor="nw",bd=2)
+        self.checklistLabel = tk.Message(text=self.checklistHelper[self.clType.get()], width=320, background=generalBG, foreground=generalFG, anchor="nw", bd=2)
         self.clType.trace("w",self.callback)
 
         self.gui()
@@ -83,25 +99,25 @@ class GUI():
     def gui(self):
 
 ## LABEL ##
-        chooseEMBL = tk.Label(text = "Input:", background = GlobVars.bg, foreground = GlobVars.fg)
-        chooseOutput = tk.Label(text = "Output:", background = GlobVars.bg, foreground = GlobVars.fg)
-        chooseCLType = tk.Label(text = "Checklist Type:", background = GlobVars.bg, foreground = GlobVars.fg)
-        isEnv = tk.Message(text="Is your organism from an environmental/uncultured sample?", background = GlobVars.bg, foreground = GlobVars.fg, anchor="nw", width=300)
-        self.helperLabel = tk.Message(master = self.window, text="", width=240, background = GlobVars.bg, foreground = GlobVars.fg)
+        chooseEMBL = tk.Label(text="Input:", background=generalBG, foreground=generalFG)
+        chooseOutput = tk.Label(text="Output:", background=generalBG, foreground=generalFG)
+        chooseCLType = tk.Label(text="Checklist Type:", background=generalBG, foreground=generalFG)
+        isEnv = tk.Message(text="Is your organism from an environmental/uncultured sample?", background=generalBG, foreground=generalFG, anchor="nw", width=300)
+        self.helperLabel = tk.Message(master=self.window, text="", width=240, background=generalBG, foreground=generalFG)
 
 ## BUTTON ##
-        submitButton =     tk.Button(master = self.window, text = "Submit", command = self.submit, background = GlobVars.buttonbg, foreground = GlobVars.buttonfg)
-        chooseFileButton = tk.Button(master = self.window, text = "Choose File", command = self.chooseFile, background = GlobVars.buttonbg, foreground = GlobVars.buttonfg)
-        chooseOutFileButton = tk.Button(master = self.window, text = "Choose File", command = self.saveFile, background = GlobVars.buttonbg, foreground = GlobVars.buttonfg)
-        closeButton =      tk.Button(master = self.window, text = "Close", command = self.window.quit, background = GlobVars.buttonbg, foreground = GlobVars.buttonfg)
+        submitButton =     tk.Button(master=self.window, text="Submit", command=self.submit, background=buttonBG, foreground=buttonFG)
+        chooseFileButton = tk.Button(master=self.window, text="Choose File", command=self.chooseFile, background=buttonBG, foreground=buttonFG)
+        chooseOutFileButton = tk.Button(master=self.window, text="Choose File", command=self.saveFile, background=buttonBG, foreground=buttonFG)
+        closeButton =      tk.Button(master=self.window, text="Close", command=self.window.quit, background=buttonBG, foreground=buttonFG)
 
-        self.yesCheckbutton = tk.Checkbutton(master = self.window, text = "yes", background = GlobVars.buttonbg, command=self.isEnvTrue)
-        self.noCheckbutton = tk.Checkbutton(master = self.window, text = "no", background = GlobVars.buttonbg, command=self.isEnvFalse)
+        self.yesCheckbutton = tk.Checkbutton(master=self.window, text="yes", background=buttonBG, command=self.isEnvTrue)
+        self.noCheckbutton = tk.Checkbutton(master=self.window, text="no", background=buttonBG, command=self.isEnvFalse)
         self.noCheckbutton.select()
 
 ## ENTRY ##
-        outputEntry = tk.Entry(master = self.window, textvariable = self.outFile, background = GlobVars.entrybg, foreground = GlobVars.entryfg)
-        inputEntry = tk.Entry(master = self.window, textvariable = self.inFile, background = GlobVars.entrybg, foreground = GlobVars.entryfg)
+        outputEntry = tk.Entry(master=self.window, textvariable=self.outFile, background=entryBG, foreground=entryFG)
+        inputEntry = tk.Entry(master=self.window, textvariable=self.inFile, background=entryBG, foreground=entryFG)
 
 
 ## DROPDOWN ##
@@ -153,25 +169,30 @@ class GUI():
 ## MAINLOOP ##
         self.window.mainloop()
 
+########################################################################
+
 ## FUNCTIONS ##
     def submit(self):
         GlobVars.warnings = []
         try:
-            if self.inFile.get()[-4:] == 'embl':
-                E2C.EMBL2checklists(self.inFile.get(), self.outFile.get(), 'embl', self.clType.get(), self.isEnv)
-                self.ready()
-            elif self.inFile.get()[-2:] == 'gb':
-                E2C.EMBL2checklists(self.inFile.get(), self.outFile.get(), 'gb', self.clType.get(), self.isEnv)
-                self.ready()
+            if self.clType.get() in GlobVars.implemented_checklists:
+                if self.inFile.get().split('.')[-1] == 'embl':
+                    E2C.EMBL2checklists(self.inFile.get(), self.outFile.get(), 'embl', self.clType.get(), self.isEnv)
+                    self.ready()
+                elif self.inFile.get().split('.')[-1] == 'gb':
+                    E2C.EMBL2checklists(self.inFile.get(), self.outFile.get(), 'gb', self.clType.get(), self.isEnv)
+                    self.ready()
+                else:
+                    raise ME.IncorrectInputFileformat('The file ending of ´%s´ does not match any of the permissible flatfile formats (.embl, .gb).' % (self.inFile.get()))
             else:
-                raise ME.WrongInputFile('Be shure your inputfile is in embl format')
-
-        except Exception as error:
+                raise ME.ChecklistTypeUnknown('ERROR: The selection ´%s´ is not an implemented checklist type.' % (self.clType.get()))
+        except Exception as e:
             try:
-                self.errorMessage(error)
+                self.errorMessage(e)
             except:
-                print error
-                #self.errorMessage(ME.ErrorNotFound(error.value))
+                print e
+
+########################################################################
 
     def ready(self):
         if len(GlobVars.warnings) != 0:
@@ -197,19 +218,19 @@ class GUI():
             self.noCheckbutton.select()
 
     def on_enterSubmitButton(self, event):
-        self.helperLabel.configure(text="Click on submit and start the program")
+        self.helperLabel.configure(text="Click to start the program")
 
     def on_enterInput(self, event):
-        self.helperLabel.configure(text="Click to choose an inputfile in genbank or embl format")
+        self.helperLabel.configure(text="Click to choose an input file in GenBank or EMBL flatfile format")
 
     def on_enterOutput(self, event):
-        self.helperLabel.configure(text="Click create an outputfile if the choosen on do not match with your wishes")
+        self.helperLabel.configure(text="Click to set name and path of the output file")
 
     def on_enterChecklisttype(self, event):
-        self.helperLabel.configure(text="Choose a checklist type which match with your inputfile")
+        self.helperLabel.configure(text="Choose the appropriate checklist type")
 
     def on_enterEnvSample(self, event):
-        self.helperLabel.configure(text="Is your organism from an environmental/uncultured sample? yes or no")
+        self.helperLabel.configure(text="Is your organism from an environmental/uncultured sample? (yes/no)")
 
     def on_enterClose(self, event):
         self.helperLabel.configure(text="Click to close the program")
@@ -229,59 +250,71 @@ class GUI():
     def saveFile(self):
         fileChooser = tk.Tk()
         fileChooser.withdraw()
-        filename = asksaveasfilename(initialdir = ".",title = "Select file",filetypes = (("LibreOffice",".tsv"),("ENA checklist","*.checklist"),("Excel",".xlsx"),("all files","*.*")))
+        filename = asksaveasfilename(initialdir=".", title="Select file", filetypes=(("LibreOffice",".tsv"),("ENA Webin checklist","*.checklist"),("all files","*.*")))
 
         fileChooser.destroy()
         self.outFile.set(filename)
+
+########################################################################
 
 ## ERROR WINDOW ##
     def errorMessage(self, error):
         errorWindow = tk.Tk()
         errorWindow.title("Error " + error.getErrorNumber() + ": " + error.getErrorName())
         errorWindow.geometry("420x100")
-        errorWindow.configure(background=GlobVars.bg)
+        errorWindow.configure(background=generalBG)
 
         #Label
-        errorMessage= tk.Message(master = errorWindow, text = error.value, width='400')
+        errorMessage= tk.Message(master=errorWindow, text=error.value, width='400')
         errorMessage.place(x=10,y=10, width=400, height=40)
 
         #Button
-        errorWindow = tk.Button(master = errorWindow, text="OK", command=errorWindow.destroy)
+        errorWindow = tk.Button(master=errorWindow, text="OK", command=errorWindow.destroy)
         errorWindow.place(x=160, y=50, width=110, height=40)
+
+########################################################################
 
 ## WARNING WINDOW ##
     def warningMessage(self, warningList):
+        ErrorMsgHeight = 75
+        ErrorSpacing = 10
+        ButtonHeight = 40
         warningWindow = tk.Tk()
         warningWindow.title("Warnings")
-        height = len(warningList)*30+10+50
+        height = (10+len(warningList)*ErrorMsgHeight)+ButtonHeight+(ErrorSpacing*3)
         warningWindow.geometry("520x" + str(height))
-        warningWindow.configure(background=GlobVars.bg)
+        warningWindow.configure(background=generalBG)
 
         warningString = ''
         for counter, warning in enumerate(warningList):
 
             #Label
-            warningLabel = tk.Label(master = warningWindow, text = warning, background = GlobVars.bg, foreground = GlobVars.fg)
-            warningLabel.place(x=10,y=10+counter*30, width=500, height=20)
+            warningLabel = tk.Label(master=warningWindow, text=warning, background=generalBG, foreground=generalFG)
+            warningLabel.place(x=10, y=10+counter*ErrorMsgHeight, width=500, height=ErrorMsgHeight+ErrorSpacing)
+            #warningLabel.place(x=10, y=10, width=500, height=100)
 
         #Button
-        warningButton = tk.Button(master = warningWindow, text="OK",command=warningWindow.destroy, background = GlobVars.buttonbg, foreground = GlobVars.buttonfg)
-        warningButton.place(x=205, y=10+len(warningList)*30, width=110, height=40)
+        warningButton = tk.Button(master=warningWindow, text="OK", command=warningWindow.destroy, background=buttonBG, foreground=buttonFG)
+        warningButton.place(x=190, y=(10+len(warningList)*ErrorMsgHeight)+(ErrorSpacing*2), width=150, height=ButtonHeight)
+
+########################################################################
 
 ## DONE WINDOW ##
     def doneMessage(self):
         doneWindow = tk.Tk()
-        doneWindow.title("embl2enachecklist")
-        doneWindow.geometry("420x110")
-        doneWindow.configure(background=GlobVars.bg)
+        doneWindow.title("EMBL2checklists")
+        doneWindow.geometry("420x130")
+        doneWindow.configure(background=generalBG)
 
         #Label
-        doneLabel = tk.Label(master = doneWindow, text = "Process complete.\nOutput location: " + self.outFile.get(), background = GlobVars.bg, foreground = GlobVars.fg)
-        doneLabel.place(x=10, y=10, width=400, height=40)
+        doneLabel = tk.Label(master=doneWindow, text="PROCESS COMPLETE.\nOutput location: " + self.outFile.get(), background=generalBG, foreground=generalFG, wraplength=390)
+        doneLabel.place(x=10, y=10, width=400, height=60)
 
         #Button
-        doneButton = tk.Button(master = doneWindow, text="Done.", command=doneWindow.destroy, background = GlobVars.buttonbg, foreground = GlobVars.buttonfg)
-        doneButton.place(x=160, y=60, width=110, height=40)
+        doneButton = tk.Button(master=doneWindow, text="Done", command=doneWindow.destroy, background=buttonBG, foreground=buttonFG)
+        doneButton.place(x=160, y=80, width=110, height=40)
+
+########################################################################
 
 ########
 # MAIN #

@@ -1,4 +1,5 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 '''
 EMBL2checklists commandline interface
 '''
@@ -23,7 +24,7 @@ __author__ = 'Michael Gruenstaeudl <m.gruenstaeudl@fu-berlin.de>,\
               Yannick Hartmaring <yanjo@zedat.fu-berlin.de>'
 __copyright__ = 'Copyright (C) 2016-2018 Michael Gruenstaeudl'
 __info__ = 'EMBL2checklists'
-__version__ = '2018.09.07.1900'
+__version__ = '2018.09.17.2300'
 
 #############
 # DEBUGGING #
@@ -37,25 +38,25 @@ import pdb
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description="  --  ".join([__author__, __copyright__, __info__, __version__]))
-    # Required
+    # Mandatory commandline arguments
     parser.add_argument('-i',
                         '--infile',
-                        help='absolute path to infile; infile in EMBL or GenBank format; Example: /path_to_input/test.embl',
+                        help='absolute path to infile; infile in EMBL or GenBank flatfile format; Example: /path_to_input/test.embl',
                         default='/home/username/Desktop/test.embl',
                         required=True)
     parser.add_argument('-o',
                         '--outfile',
-                        help='absolute path to outfile; outfile in ENA checklist format (tsv-format); Example: /path_to_output/test.tsv',
+                        help='absolute path to outfile; outfile in ENA Webin checklist format (tsv-format); Example: /path_to_output/test.tsv',
                         default='/home/username/Desktop/test.tsv',
                         required=True)
     parser.add_argument('-c',
                         '--cltype',
-                        help='Any of the currently implemented checklist types:' + ", ".join(GlobVars.allowed_checklists),
+                        help='Any of the currently implemented checklist types:' + ", ".join(GlobVars.implemented_checklists),
                         default=None,
                         required=True)
     parser.add_argument('-e',
                         '--environmental',
-                        help="Is your organism from an environmental/uncultured sample? yes/no",
+                        help="Is your organism from an environmental/uncultured sample? (yes/no)",
                         required=True)
     parser.add_argument('--version',
                         help='Print version information and exit',
@@ -67,22 +68,25 @@ if __name__ == '__main__':
 # MAIN #
 ########
     try:
-        if args.infile.split('.')[-1] == 'embl':
-            E2C.EMBL2checklists(args.infile, args.outfile, 'embl', args.cltype, args.environmental)
-            if len(GlobVars.warnings) != 0:
-                for warning in GlobVars.warnings:
-                    print warning
-            print "Process complete.\nOutput location: " + args.outfile
-        elif args.infile.split('.')[-1] == 'gb':
-            E2C.EMBL2checklists(args.infile, args.outfile, 'gb', args.cltype, args.environmental)
-            if len(GlobVars.warnings) != 0:
-                for warning in GlobVars.warnings:
-                    print warning
-            print "Process complete.\nOutput location: " + args.outfile
+        if args.cltype in GlobVars.implemented_checklists:
+            if args.infile.split('.')[-1] == 'embl':
+                E2C.EMBL2checklists(args.infile, args.outfile, 'embl', args.cltype, args.environmental)
+                if len(GlobVars.warnings) != 0:
+                    for warning in GlobVars.warnings:
+                        print warning
+                print "PROCESS COMPLETE.\nOutput location: " + args.outfile
+            elif args.infile.split('.')[-1] == 'gb':
+                E2C.EMBL2checklists(args.infile, args.outfile, 'gb', args.cltype, args.environmental)
+                if len(GlobVars.warnings) != 0:
+                    for warning in GlobVars.warnings:
+                        print warning
+                print "PROCESS COMPLETE.\nOutput location: " + args.outfile
+            else:
+                raise ME.IncorrectInputFileformat('ERROR: The file ending of ´%s´ does not match any of the permissible flatfile formats (.embl, .gb).' % (args.infile))
         else:
-            raise ME.WrongInputFile('Error: ' + args.infile + ' is not in embl format')
-    except Exception as error:
+            raise ME.ChecklistTypeUnknown('ERROR: The selection ´%s´ is not an implemented checklist type.' % (args.cltype))
+    except Exception as e:
         try:
-            print error.value
+            print e.value
         except:
-            print error
+            print e

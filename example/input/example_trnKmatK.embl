@@ -19,7 +19,7 @@ FT   gene            <1..88
 FT                   /note="trnK-UUU"
 FT                   /product="tRNA-Lys"
 FT   tRNA            join(1..5,82..88)
-FT                   /note="trnK-UUU"
+FT                   /gene="trnK-UUU"
 FT   CDS             17..70
 FT                   /note="matK"
 FT                   /product="maturase K"
@@ -60,7 +60,7 @@ FT   gene            <1..89
 FT                   /note="trnK-UUU"
 FT                   /product="tRNA-Lys"
 FT   tRNA            join(1..5,83..89)
-FT                   /note="trnK-UUU"
+FT                   /gene="trnK-UUU"
 FT   CDS             18..71
 FT                   /note="matK"
 FT                   /product="maturase K"

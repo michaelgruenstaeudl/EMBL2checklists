@@ -14,7 +14,7 @@ FEATURES
 
 EXAMPLE USAGE
 -------------
-### Commandline Interface
+#### Commandline Interface
 ```
 python2 scripts/EMBL2checklists_CMD.py
 -i example/example_trnKmatK.embl
@@ -22,7 +22,7 @@ python2 scripts/EMBL2checklists_CMD.py
 -c trnK_matK
 -e no
 ```
-### GUI Interface
+#### GUI Interface
 ```
 python2 scripts/EMBL2checklists_GUI.py
 ```

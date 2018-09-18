@@ -1,19 +1,21 @@
 *EMBL2checklists*
 ===================
-Converts EMBL-formatted flatfiles to submission checklists (i.e., tab-separated spreadsheets) for submission to [ENA](http://www.ebi.ac.uk/ena) via the interactive [Webin submission system](https://www.ebi.ac.uk/ena/submit/sra/#home).
+Converts EMBL- or GenBank-formatted flatfiles to submission checklists (i.e., tab-separated spreadsheets) for submission to [ENA](http://www.ebi.ac.uk/ena) via the interactive [Webin submission system](https://www.ebi.ac.uk/ena/submit/sra/#home).
 
-INPUT, OUTPUT AND PREREQUISITES
+## INPUT, OUTPUT AND PREREQUISITES
 -------------------------------
 * Input: EMBL- or GenBank-formatted flatfile
 * Output: tab-separated spreadsheet ("checklist")
-* Prerequisites: Input files must have the name of the DNA marker (e.g., "matK", "ITS") as qualifier value for a feature named "gene", "note" or "standard_name"
+* Prerequisites: Input flatfiles must have the DNA marker name (e.g., "matK", "ITS") as qualifier value for any of the defined key_features ("gene", "note", "product" or "standard_name").
 
-FEATURES
+## FEATURES
 --------
-* Software checks if the type of DNA marker specified by the user is indeed present in the embl-input file (specifically in as qualifier value for a qualifier named "gene", "note" or "standard_name")
+* Foo
+* Bar
+* Baz
 
-EXAMPLE USAGE
--------------
+## EXAMPLE USAGE
+----------------
 #### Commandline Interface
 ```
 python2 scripts/EMBL2checklists_CMD.py \
@@ -27,8 +29,9 @@ python2 scripts/EMBL2checklists_CMD.py \
 python2 scripts/EMBL2checklists_GUI.py
 ```
 
-CHANGELOG
----------
+## CHANGELOG
+###### Version 0.0.5 (2018.09.18)
+* Code cleanup
 ###### Version 0.0.4 (2018.09.17)
 * Major revision of code
 ###### Version 0.0.3 (2018.09.07)

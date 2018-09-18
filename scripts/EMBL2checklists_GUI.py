@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+
 '''
 EMBL2checklists GUI
 '''
@@ -16,15 +17,15 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'EMBL2checklists')
 
 import EMBL2checklistsMain as E2C
 import globalVariables as GlobVars
-import MyExceptions as ME
 
 ###############
 # AUTHOR INFO #
 ###############
-__author__ =  'Yannick Hartmaring <yanjo@zedat.fu-berlin.de>,\
-               Michael Gruenstaeudl <m.gruenstaeudl@fu-berlin.de>'
-__info__ =    'EMBL2checklists'
-__version__ = '2018.09.17.1900'
+__author__ = 'Michael Gruenstaeudl <m.gruenstaeudl@fu-berlin.de>,\
+              Yannick Hartmaring <yanjo@zedat.fu-berlin.de>'
+__copyright__ = 'Copyright (C) 2016-2018 Michael Gruenstaeudl'
+__info__ = 'EMBL2checklists'
+__version__ = '2018.09.18.1600'
 
 #############
 # DEBUGGING #
@@ -183,9 +184,9 @@ class GUI():
                     E2C.EMBL2checklists(self.inFile.get(), self.outFile.get(), 'gb', self.clType.get(), self.isEnv)
                     self.ready()
                 else:
-                    raise ME.IncorrectInputFileformat('The file ending of ´%s´ does not match any of the permissible flatfile formats (.embl, .gb).' % (self.inFile.get()))
+                    raise Exception('The file ending of ´%s´ does not match any of the permissible flatfile formats (.embl, .gb).' % (self.inFile.get()))
             else:
-                raise ME.ChecklistTypeUnknown('ERROR: The selection ´%s´ is not an implemented checklist type.' % (self.clType.get()))
+                raise Exception('ERROR: The selection ´%s´ is not an implemented checklist type.' % (self.clType.get()))
         except Exception as e:
             try:
                 self.errorMessage(e)

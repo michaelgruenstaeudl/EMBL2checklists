@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+
 '''
 EMBL2checklists commandline interface
 '''
@@ -7,24 +8,19 @@ EMBL2checklists commandline interface
 #####################
 # IMPORT OPERATIONS #
 #####################
-# Add specific directory to sys.path in order to import its modules
-# NOTE: THIS RELATIVE IMPORTING IS AMATEURISH.
-# NOTE: COULD THE FOLLOWING IMPORT BE REPLACED WITH 'import EMBL2checklists'?
 import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'EMBL2checklists'))
 
 import EMBL2checklistsMain as E2C
 import globalVariables as GlobVars
-import MyExceptions as ME
 
 ###############
 # AUTHOR INFO #
 ###############
-__author__ = 'Michael Gruenstaeudl <m.gruenstaeudl@fu-berlin.de>,\
-              Yannick Hartmaring <yanjo@zedat.fu-berlin.de>'
+__author__ = 'Michael Gruenstaeudl <m.gruenstaeudl@fu-berlin.de>'
 __copyright__ = 'Copyright (C) 2016-2018 Michael Gruenstaeudl'
 __info__ = 'EMBL2checklists'
-__version__ = '2018.09.17.2300'
+__version__ = '2018.09.18.1600'
 
 #############
 # DEBUGGING #
@@ -82,11 +78,8 @@ if __name__ == '__main__':
                         print warning
                 print "PROCESS COMPLETE.\nOutput location: " + args.outfile
             else:
-                raise ME.IncorrectInputFileformat('ERROR: The file ending of ´%s´ does not match any of the permissible flatfile formats (.embl, .gb).' % (args.infile))
+                raise Exception('ERROR: The file ending of ´%s´ does not match any of the permissible flatfile formats (.embl, .gb).' % (args.infile))
         else:
-            raise ME.ChecklistTypeUnknown('ERROR: The selection ´%s´ is not an implemented checklist type.' % (args.cltype))
+            raise Exception('ERROR: The selection ´%s´ is not an implemented checklist type.' % (args.cltype))
     except Exception as e:
-        try:
-            print e.value
-        except:
-            print e
+        print e

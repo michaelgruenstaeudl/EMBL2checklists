@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+
 '''
 Setting global variables.
 '''
@@ -7,8 +8,7 @@ Setting global variables.
 #####################
 # IMPORT OPERATIONS #
 #####################
-import MyExceptions as ME
-import collections
+#import collections
 
 ###############
 # AUTHOR INFO #
@@ -17,7 +17,7 @@ __author__ = 'Michael Gruenstaeudl <m.gruenstaeudl@fu-berlin.de>,\
               Yannick Hartmaring <yanjo@zedat.fu-berlin.de>'
 __copyright__ = 'Copyright (C) 2016-2018 Michael Gruenstaeudl'
 __info__ = 'EMBL2checklists'
-__version__ = '2018.09.17.2300'
+__version__ = '2018.09.18.1600'
 
 #############
 # DEBUGGING #
@@ -29,32 +29,23 @@ import pdb
 # VARIABLES #
 #############
 
-implemented_checklists = ['IGS','gene_intron','trnK_matK','rRNA','ITS','ETS']
+implemented_checklists = ['IGS', 'gene_intron', 'trnK_matK', 'rRNA', 'ITS', 'ETS']
+
+standard_qualifiers = ['gene', 'note', 'product', 'standard_name']
+
+keywords_IGS = ['IGS', 'spacer', 'intergenic spacer']
+keywords_gene_intron = ['gene', 'intron']
+keywords_trnKmatK = ['trnK', 'matK']
+keywords_rRNA = ['18S', '28S', '5.8S']
+keywords_ITS = ['ITS', 'ITS1', 'ITS2', 'internal transcribed']
+keywords_ETS = ['ETS', 'external transcribed']
 
 warnings = []
-
-keywords_IGS = ['IGS','spacer','intergenic']
-keywords_gene_intron = ['gene','intron']
-keywords_trnKmatK = ['trnK','matK']
-keywords_rRNA = ['18S','28S']
-keywords_ITS = ['ITS','ITS1','ITS2']
-keywords_ETS = ['ETS']
-keywords_allChecklists = keywords_IGS + \
-                         keywords_gene_intron + \
-                         keywords_trnKmatK + \
-                         keywords_rRNA + \
-                         keywords_ITS + \
-                         keywords_ETS
 
 ###########
 # CLASSES #
 ###########
 class GlobalVariables():
-    """
-    This class contains functions and attributes which are importend for the hole code.
-    Attributes:
-        qualifiers (list): qualifiers
-    """
 
     def __init__(self):
         self.ITS_translator = {}
@@ -161,20 +152,17 @@ class GlobalVariables():
 #############
 # FUNCTIONS #
 #############
-    def getQualifiers(self, checklist_type, needed):
-        """combine mandatory and optional qualifiers for specific checklist type and return it
+    def getQualifiers(self, checklist_type, status):
+        ''' Combine mandatory and optional qualifiers for specific checklist type
         Args:
-            checklist_type [string]
-            needed [string]: 'o' for optional, 'm' manatory and 'om' for both
+            checklist_type (string)
+            status [string]: 'o' for optional, 'm' manatory and 'om' for both
         Returns:
-            (list)
-        Raises:
-            ChecklistTypeUnknown occurs if the checklist type is not mention
-            in this function
-        """
+            qualifiers (list)
+        '''
         qualifiers = []
         for quali in self.qualifiers[checklist_type]:
-            if quali[1] in needed:
+            if quali[1] in status:
                 qualifiers.append(quali[0])
         return qualifiers
 

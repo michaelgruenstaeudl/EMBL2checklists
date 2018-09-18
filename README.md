@@ -4,9 +4,9 @@ Converts EMBL- or GenBank-formatted flatfiles to submission checklists (i.e., ta
 
 INPUT, OUTPUT AND PREREQUISITES
 -------------------------------
-* Input: EMBL- or GenBank-formatted flatfile
-* Output: tab-separated spreadsheet ("checklist")
-* Prerequisites: Input flatfiles must have the DNA marker name (e.g., "matK", "ITS") as qualifier value for any of the defined key_features ("gene", "note", "product" or "standard_name").
+* **Input**: EMBL- or GenBank-formatted flatfile
+* **Output**: tab-separated spreadsheet ("checklist")
+* **Prerequisites**: Input flatfiles must have the DNA marker name (e.g., "matK", "ITS") as qualifier value for any of the defined key_features ("gene", "note", "product" or "standard_name").
 
 EXAMPLE USAGE
 -------------

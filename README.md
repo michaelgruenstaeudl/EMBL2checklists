@@ -23,17 +23,26 @@ python2 scripts/EMBL2checklists_CMD.py \
 python2 scripts/EMBL2checklists_GUI.py
 ```
 
+![](EMBL2checklist_GUI.png)
+
 FEATURES
 --------
 * Foo
 * Bar
 * Baz
 
-![](EMBL2checklist_GUI.png)
-
+INSTALLATION
+------------
+* Foo
+* Bar
+* Baz
 
 CHANGELOG
 ---------
+###### Version 0.0.6 (2018.09.25)
+* Added example in- and output files for all checklists
+* Added unit tests
+* Minor improvements of checklist parsing code
 ###### Version 0.0.5 (2018.09.18)
 * Code cleanup
 ###### Version 0.0.4 (2018.09.17)

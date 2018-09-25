@@ -17,7 +17,7 @@ import globalVariables as GlobVars
 __author__ = 'Michael Gruenstaeudl <m.gruenstaeudl@fu-berlin.de>'
 __copyright__ = 'Copyright (C) 2016-2018 Michael Gruenstaeudl'
 __info__ = 'EMBL2checklists'
-__version__ = '2018.09.18.1600'
+__version__ = '2018.09.25.1600'
 
 #############
 # DEBUGGING #
@@ -303,7 +303,7 @@ class Parser:
             # GENE
             try:
                 gene_features = Parser().extract_features_by_type(seq_record.features, "gene")
-                outdict["gene"] = [f.qualifiers['gene'] for f in gene_features][0][0]
+                outdict["gene"] = [f.qualifiers['note'] for f in gene_features][0][0]
             except:
                 GlobVars.warnings.append('WARNING: The mandatory feature ´%s´ is missing from record ´%s´.' % ('gene', seq_record.id))
                 return False
@@ -354,24 +354,34 @@ class Parser:
             try:
                 intron_features = Parser().extract_features_by_type(seq_record.features, "intron")
                 intron_qualifiers = Parser().extract_qualifier_info(intron_features, "gene")
+                if len(intron_qualifiers) != 0:
+                    try:
+                        if 'trnK' in intron_qualifiers:
+                            outdict['trnK_intron_present'] = 'yes'
+                        else:
+                            outdict['trnK_intron_present'] = 'no'
+                    except:
+                        GlobVars.warnings.append('WARNING: The parsing of %s from record ´%s´ was unsuccessful.' % ("the trnK intron information", seq_record.id))
+                        return False
+                else:
+                    raise Exception
             except:
                 try:
                     tRNA_features = Parser().extract_features_by_type(seq_record.features, "tRNA")
                     tRNA_qualifiers = Parser().extract_qualifier_info(tRNA_features, "gene")
+                    if len(tRNA_qualifiers) != 0:
+                        try:
+                            if 'trnK' in tRNA_qualifiers:
+                                outdict['trnK_intron_present'] = 'yes'
+                            else:
+                                outdict['trnK_intron_present'] = 'no'
+                        except:
+                            GlobVars.warnings.append('WARNING: The parsing of %s from record ´%s´ was unsuccessful.' % ("the trnK intron information", seq_record.id))
+                            return False
                 except:
                     GlobVars.warnings.append("WARNING: The mandatory feature combination of ´%s´ is missing from record ´%s´." % ("either an intron feature or a tRNA feature for trnK", seq_record.id))
                     return False
-            try:
-                if 'trnK' in intron_qualifiers:
-                    outdict['trnK_intron_present'] = 'yes'
-                elif 'trnK' in tRNA_qualifiers:
-                    outdict['trnK_intron_present'] = 'yes'
-                else:
-                    outdict['trnK_intron_present'] = 'no'
-            except:
-                GlobVars.warnings.append('WARNING: The parsing of ´%s´ from record ´%s´ was unsuccessful.' % ("the trnK intron", seq_record.id))
-                return False
-
+            
             # MATK GENE
             try:
                 gene_features = Parser().extract_features_by_type(seq_record.features, "gene")
@@ -459,25 +469,29 @@ class Parser:
             outdict["sequence"] = Parser().extract_sequence(seq_record)
             
             # ISOLATION_SOURCE
-            try:
-                source_features = Parser().extract_features_by_type(seq_record.features, "source")
-                outdict["isolation_source"] = [f.qualifiers['isolation_source'] for f in source_features][0][0]
-            except:
-                GlobVars.warnings.append('WARNING: The mandatory source-qualifier ´%s´ is missing from record ´%s´.' % ('isolation_source', seq_record.id))
-                return False
+            if env_sample.lower() == "yes":
+                try:
+                    source_features = Parser().extract_features_by_type(seq_record.features, "source")
+                    outdict["isolation_source"] = [f.qualifiers['isolation_source'] for f in source_features][0][0]
+                except:
+                    GlobVars.warnings.append('WARNING: The mandatory source-qualifier ´%s´ is missing from record ´%s´.' % ('isolation_source', seq_record.id))
+                    return False
 
-            # 18S, 26S/28S, ITS1, ITS2
+            # 18S, 26S/28S
             try:
                 rRNA_features = Parser().extract_features_by_type(seq_record.features, "rRNA")
                 rRNA_qualifiers = Parser().extract_qualifier_info(rRNA_features, "gene")
             except:
-                try:
+                GlobVars.warnings.append('WARNING: The mandatory feature ´%s´ is missing from record ´%s´.' % ('rRNA', seq_record.id))
+                return False
+            # ITS1, ITS2
+            try:
                     ITS_features = Parser().extract_features_by_type(seq_record.features, "misc_RNA")
                     ITS_qualifiers = Parser().extract_qualifier_info(ITS_features, "note")
-                except:
-                    GlobVars.warnings.append('WARNING: The mandatory feature combination of ´%s´ in ´%s´ is missing.' % ('either rRNA for 18S and 26S/28S, or misc_RNA for ITS1 and ITS2', seq_record.id))
-                    return False
-            # ETS
+            except:
+                GlobVars.warnings.append('WARNING: The mandatory feature ´%s´ is missing from record ´%s´.' % ('misc_RNA', seq_record.id))
+                return False
+            # 18S, 26S/28S, ITS1, ITS2
             try:
                 # 18S
                 if '18S' in rRNA_qualifiers:

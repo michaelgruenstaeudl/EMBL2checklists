@@ -13,7 +13,7 @@ def my_test_suite():
 
 setup(
     name='EMBL2checklists',
-    version='0.0.5',
+    version='0.0.6',
     description='Converts EMBL- or GenBank-formatted flatfiles to submission checklists (i.e., tab-separated spreadsheets) for submission to ENA via the interactive Webin submission system',
     long_description=read('README.md'),
     classifiers=[

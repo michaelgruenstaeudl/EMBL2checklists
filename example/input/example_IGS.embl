@@ -1,0 +1,48 @@
+ID   taxon1; SV 1; linear; genomic DNA; ; PLN; 100 BP.
+AC   ;
+DE   unidentified plant Gene1 gene, partial sequence; Gene1-Gene2 intergenic
+DE   spacer, complete sequence; Gene2 gene, partial sequence; isolate taxon1
+RN   [1]
+RA   Gruenstaeudl M.
+RL   Submitted (13-SEP-2018) to ENA.
+FH   Key             Location/Qualifiers
+FH
+FT   source          1..100
+FT                   /mol_type="genomic DNA"
+FT                   /specimen_voucher="Gruenstaeudl 01"
+FT                   /isolate="taxon1"
+FT                   /organism="unidentified plant"
+FT   gene            <1..15
+FT                   /note="Gene1"
+FT   misc_feature    16..85
+FT                   /product="Gene1-Gene2 intergenic spacer"
+FT   gene            86..>100
+FT                   /note="Gene2"
+SQ   Sequence 100 BP; 40 A; 52 C; 4 G; 4 T; 0 other;
+     aaaaaaaaaa aatagccccc cccccccccc cccccccccc catgaaaaaa aaaaaatagc        60
+     cccccccccc cccccccccc cccccatgaa aaaaaaaaaa                             100
+//
+ID   taxon2; SV 1; linear; genomic DNA; ; PLN; 101 BP.
+AC   ;
+DE   unidentified plant Gene1 gene, partial sequence; Gene1-Gene2 intergenic
+DE   spacer, complete sequence; Gene2 gene, partial sequence; isolate taxon2
+RN   [1]
+RA   Gruenstaeudl M.
+RL   Submitted (13-SEP-2018) to ENA.
+FH   Key             Location/Qualifiers
+FH
+FT   source          1..101
+FT                   /mol_type="genomic DNA"
+FT                   /specimen_voucher="s.n. 02"
+FT                   /isolate="taxon2"
+FT                   /organism="unidentified plant"
+FT   gene            <1..12
+FT                   /note="Gene1"
+FT   misc_feature    13..86
+FT                   /product="Gene1-Gene2 intergenic spacer"
+FT   gene            87..>101
+FT                   /note="Gene2"
+SQ   Sequence 101 BP; 37 A; 56 C; 4 G; 4 T; 0 other;
+     aaaaaaaaat agcccccccc cccccccccc cccccccccc ccatgaaaaa aaaaaaatag        60
+     cccccccccc cccccccccc ccccccatga aaaaaaaaaa a                           101
+//

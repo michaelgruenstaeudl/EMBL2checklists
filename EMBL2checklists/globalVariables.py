@@ -17,7 +17,7 @@ __author__ = 'Michael Gruenstaeudl <m.gruenstaeudl@fu-berlin.de>,\
               Yannick Hartmaring <yanjo@zedat.fu-berlin.de>'
 __copyright__ = 'Copyright (C) 2016-2018 Michael Gruenstaeudl'
 __info__ = 'EMBL2checklists'
-__version__ = '2018.09.18.1600'
+__version__ = '2018.09.25.1600'
 
 #############
 # DEBUGGING #
@@ -31,7 +31,7 @@ import pdb
 
 implemented_checklists = ['IGS', 'gene_intron', 'trnK_matK', 'rRNA', 'ITS', 'ETS']
 
-standard_qualifiers = ['gene', 'note', 'product', 'standard_name']
+standard_qualifiers = ['gene', 'note', 'product', 'standard_name', 'number']
 
 keywords_IGS = ['IGS', 'spacer', 'intergenic spacer']
 keywords_gene_intron = ['gene', 'intron']

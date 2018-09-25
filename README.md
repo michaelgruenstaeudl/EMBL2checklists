@@ -3,12 +3,16 @@
 
 EMBL2checklists converts EMBL- or GenBank-formatted flatfiles to submission checklists (i.e., tab-separated spreadsheets) for submission to [ENA](http://www.ebi.ac.uk/ena) via the interactive [Webin submission system](https://www.ebi.ac.uk/ena/submit/sra/#home).
 
+
 <!---
+
 ## FEATURES
 * Foo
 * Bar
 * Baz
+
 -->
+
 
 ## INPUT, OUTPUT AND PREREQUISITES
 * **Input**: EMBL- or GenBank-formatted flatfile
@@ -32,6 +36,8 @@ $ python2 scripts/EMBL2checklists_GUI.py
 
 ![](EMBL2checklist_GUI.png)
 
+
+<!---
 
 ## INSTALLATION
 If you don't have Python 2.7 installed, be sure to [install it
@@ -62,6 +68,8 @@ Using EMBL2checklists in your research? Please cite it!
   journal = {...}
 }
 ```
+
+-->
 
 
 ## CHANGELOG

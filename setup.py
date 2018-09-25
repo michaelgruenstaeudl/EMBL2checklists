@@ -11,23 +11,27 @@ def my_test_suite():
     test_suite = test_loader.discover('tests', pattern='*_test.py')
     return test_suite
 
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
 setup(
     name='EMBL2checklists',
-    version='0.0.6',
+    version='0.1',
+    author='Michael Gruenstaeudl, PhD',
+    author_email='m.gruenstaeudl@fu-berlin.de',
     description='Converts EMBL- or GenBank-formatted flatfiles to submission checklists (i.e., tab-separated spreadsheets) for submission to ENA via the interactive Webin submission system',
-    long_description=read('README.md'),
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url='https://github.com/michaelgruenstaeudl/EMBL2checklists',
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
-        'License :: OSI Approved :: GNU General Public License (GPLv3)',
+        'Development Status :: 4 - Beta',
+        'License :: OSI Approved :: BSD License',
         'Programming Language :: Python :: 2.7',
         'Intended Audience :: Science/Research',
         'Topic :: Scientific/Engineering :: Bio-Informatics'
         ],
-    keywords='DNA sequence submission to ENA',
-    url='https://github.com/michaelgruenstaeudl/EMBL2checklists',
-    author='Michael Gruenstaeudl, PhD',
-    author_email='m.gruenstaeudl@fu-berlin.de',
-    license='GPLv3',
+    keywords='novel DNA sequences, public sequence databases, European Nucleotide Archive, file conversion, data upload',
+    license='BSD',
     packages=['EMBL2checklists'], # So that the subfolder 'EMBL2checklists' is read immediately.
     #packages = find_packages(),
     install_requires=['biopython', 'argparse'],

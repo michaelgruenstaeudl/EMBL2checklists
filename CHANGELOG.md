@@ -1,6 +1,6 @@
 CHANGELOG
 ---------
-###### Version 0.0.6 (2018.09.25)
+###### Version 0.1 (2018.09.25)
 * Added example in- and output files for all checklists
 * Added unit tests
 * Minor improvements of checklist parsing code

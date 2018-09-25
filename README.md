@@ -1,7 +1,10 @@
 *EMBL2checklists*
 =================
 
-[![PyPI](https://img.shields.io/pypi/v/nine.svg)](https://pypi.org/project/EMBL2checklists/)
+[![PyPI status](https://img.shields.io/pypi/v/EMBL2checklists.svg)](https://pypi.python.org/pypi/EMBL2checklists/)
+[![PyPI pyversions](https://img.shields.io/pypi/v/EMBL2checklists.svg)](https://pypi.python.org/pypi/EMBL2checklists/)
+[![PyPI version shields.io](https://img.shields.io/pypi/v/EMBL2checklists.svg)](https://pypi.python.org/pypi/EMBL2checklists/)
+[![PyPI license](https://img.shields.io/pypi/v/EMBL2checklists.svg)](https://pypi.python.org/pypi/EMBL2checklists/)
 
 EMBL2checklists converts EMBL- or GenBank-formatted flatfiles to submission checklists (i.e., tab-separated spreadsheets) for submission to [ENA](http://www.ebi.ac.uk/ena) via the interactive [Webin submission system](https://www.ebi.ac.uk/ena/submit/sra/#home).
 

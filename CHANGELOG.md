@@ -1,5 +1,8 @@
 CHANGELOG
 ---------
+###### Version 0.2 (2018.10.02)
+* Minor code improvements
+* First release version
 ###### Version 0.1 (2018.09.25)
 * Added example in- and output files for all checklists
 * Added unit tests

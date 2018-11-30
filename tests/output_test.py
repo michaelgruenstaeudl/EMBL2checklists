@@ -40,7 +40,7 @@ try:
 except:
     base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-script_rel_path = 'scripts/EMBL2checklists_CMD.py'
+script_rel_path = 'scripts/EMBL2checklists_launcher_CLI.py'
 script_abs_path = os.path.join(base_path, script_rel_path)
 
 e_mail = 'm.gruenstaeudl@fu-berlin.de'  # Please enter your email address here.

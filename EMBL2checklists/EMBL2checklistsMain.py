@@ -1,7 +1,8 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
-''' Main operations in embl2enachecklist '''
+'''
+Main operations in EMBL2checklists
+'''
 
 #####################
 # IMPORT OPERATIONS #
@@ -31,6 +32,7 @@ import pdb
 #############
 # FUNCTIONS #
 #############
+
 def EMBL2checklists(path_to_embl, path_to_outfile, file_format="embl", checklist_type=None, env_sample="no"):
     ''' Primary code function; it executes all subfunctions in the correct order
     Args:

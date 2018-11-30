@@ -1,8 +1,7 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 '''
-Custom operations to generate ENA checklists
+Prerequisites for generating ENA checklists
 '''
 
 #####################

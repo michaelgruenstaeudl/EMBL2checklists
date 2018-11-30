@@ -16,7 +16,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='EMBL2checklists',
-    version='0.2',
+    version='0.3',
     author='Michael Gruenstaeudl, PhD',
     author_email='m.gruenstaeudl@fu-berlin.de',
     description='Converts EMBL- or GenBank-formatted flatfiles to submission checklists (i.e., tab-separated spreadsheets) for submission to ENA via the interactive Webin submission system',
@@ -32,6 +32,14 @@ setup(
         ],
     keywords='novel DNA sequences, public sequence databases, European Nucleotide Archive, file conversion, data upload',
     license='BSD',
+    entry_points={  # For automatic script generation
+        'console_scripts': [
+            'EMBL2checklists_CLI = EMBL2checklists.CLIOps:start_EMBL2checklists_CLI',
+        ],
+        'gui_scripts': [
+            'EMBL2checklists_GUI = EMBL2checklists.GUIOps:start_EMBL2checklists_GUI',
+        ]
+    },
     packages=['EMBL2checklists'], # So that the subfolder 'EMBL2checklists' is read immediately.
     #packages = find_packages(),
     install_requires=['biopython', 'argparse'],

@@ -1,19 +1,18 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 '''
-EMBL2checklists GUI
+GUI operations in EMBL2checklists
 '''
 
 #####################
 # IMPORT OPERATIONS #
 #####################
 import sys, os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'EMBL2checklists'))
+
 import Tkinter as tk
 import tkFileDialog
 from tkFileDialog import askopenfilename, asksaveasfilename
-
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'EMBL2checklists'))
 
 import EMBL2checklistsMain as E2C
 import globalVariables as GlobVars
@@ -25,7 +24,7 @@ __author__ = 'Michael Gruenstaeudl <m.gruenstaeudl@fu-berlin.de>,\
               Yannick Hartmaring <yanjo@zedat.fu-berlin.de>'
 __copyright__ = 'Copyright (C) 2016-2018 Michael Gruenstaeudl'
 __info__ = 'EMBL2checklists'
-__version__ = '2018.09.18.1600'
+__version__ = '2018.11.30.1800'
 
 #############
 # DEBUGGING #
@@ -46,17 +45,20 @@ entryFG = "black"
 ###########
 # CLASSES #
 ###########
+
 class GUI():
+
+########################################################################
 
     def __init__(self):
 
-## WINDOW ##
+    ## WINDOW ##
         self.window = tk.Tk()
         self.window.title("EMBL2checklists")
         self.window.geometry("460x400")
         self.window.configure(background=generalBG)
 
-## VARIABLES ##
+    ## VARIABLES ##
         self.outFile = tk.StringVar()
         self.inFile = tk.StringVar()
         self.outFile.set("")
@@ -97,34 +99,35 @@ class GUI():
 
         self.gui()
 
+########################################################################
+
     def gui(self):
 
-## LABEL ##
+    ## LABEL ##
         chooseEMBL = tk.Label(text="Input:", background=generalBG, foreground=generalFG)
         chooseOutput = tk.Label(text="Output:", background=generalBG, foreground=generalFG)
         chooseCLType = tk.Label(text="Checklist Type:", background=generalBG, foreground=generalFG)
         isEnv = tk.Message(text="Is your organism from an environmental/uncultured sample?", background=generalBG, foreground=generalFG, anchor="nw", width=300)
         self.helperLabel = tk.Message(master=self.window, text="", width=240, background=generalBG, foreground=generalFG)
 
-## BUTTON ##
-        submitButton =     tk.Button(master=self.window, text="Submit", command=self.submit, background=buttonBG, foreground=buttonFG)
+    ## BUTTON ##
+        submitButton = tk.Button(master=self.window, text="Submit", command=self.submit, background=buttonBG, foreground=buttonFG)
         chooseFileButton = tk.Button(master=self.window, text="Choose File", command=self.chooseFile, background=buttonBG, foreground=buttonFG)
         chooseOutFileButton = tk.Button(master=self.window, text="Choose File", command=self.saveFile, background=buttonBG, foreground=buttonFG)
-        closeButton =      tk.Button(master=self.window, text="Close", command=self.window.quit, background=buttonBG, foreground=buttonFG)
+        closeButton = tk.Button(master=self.window, text="Close", command=self.window.quit, background=buttonBG, foreground=buttonFG)
 
         self.yesCheckbutton = tk.Checkbutton(master=self.window, text="yes", background=buttonBG, command=self.isEnvTrue)
         self.noCheckbutton = tk.Checkbutton(master=self.window, text="no", background=buttonBG, command=self.isEnvFalse)
         self.noCheckbutton.select()
 
-## ENTRY ##
+    ## ENTRY ##
         outputEntry = tk.Entry(master=self.window, textvariable=self.outFile, background=entryBG, foreground=entryFG)
         inputEntry = tk.Entry(master=self.window, textvariable=self.inFile, background=entryBG, foreground=entryFG)
 
-
-## DROPDOWN ##
+    ## DROPDOWN ##
         dropdown = tk.OptionMenu(self.window, self.clType, *self.data)
 
-## PRINTER ##
+    ## PRINTER ##
         chooseEMBL.place(x=10,y=10, width=110, height=40)
         inputEntry.place(x=130,y=10, width=210, height=40)
         chooseFileButton.place(x=350,y=10, width=100, height=40)
@@ -167,12 +170,12 @@ class GUI():
         closeButton.bind("<Enter>", self.on_enterClose)
         closeButton.bind("<Leave>", self.on_leave)
 
-## MAINLOOP ##
+    ## MAINLOOP ##
         self.window.mainloop()
 
 ########################################################################
 
-## FUNCTIONS ##
+    ## FUNCTIONS ##
     def submit(self):
         GlobVars.warnings = []
         try:
@@ -198,7 +201,6 @@ class GUI():
     def ready(self):
         if len(GlobVars.warnings) != 0:
             self.warningMessage(GlobVars.warnings)
-
         self.doneMessage()
 
     def callback(self,*args):
@@ -243,7 +245,6 @@ class GUI():
         fileChooser = tk.Tk()
         fileChooser.withdraw()
         filename = askopenfilename()
-
         fileChooser.destroy()
         self.inFile.set(filename)
         self.outFile.set(filename.split("/")[-1].split(".")[0] + ".tsv")
@@ -252,13 +253,12 @@ class GUI():
         fileChooser = tk.Tk()
         fileChooser.withdraw()
         filename = asksaveasfilename(initialdir=".", title="Select file", filetypes=(("LibreOffice",".tsv"),("ENA Webin checklist","*.checklist"),("all files","*.*")))
-
         fileChooser.destroy()
         self.outFile.set(filename)
 
 ########################################################################
 
-## ERROR WINDOW ##
+    ## ERROR WINDOW ##
     def errorMessage(self, error):
         errorWindow = tk.Tk()
         errorWindow.title("Error " + error.getErrorNumber() + ": " + error.getErrorName())
@@ -275,7 +275,7 @@ class GUI():
 
 ########################################################################
 
-## WARNING WINDOW ##
+    ## WARNING WINDOW ##
     def warningMessage(self, warningList):
         ErrorMsgHeight = 75
         ErrorSpacing = 10
@@ -300,7 +300,7 @@ class GUI():
 
 ########################################################################
 
-## DONE WINDOW ##
+    ## DONE WINDOW ##
     def doneMessage(self):
         doneWindow = tk.Tk()
         doneWindow.title("EMBL2checklists")
@@ -317,8 +317,10 @@ class GUI():
 
 ########################################################################
 
+
 ########
 # MAIN #
 ########
-if __name__ == '__main__':
+
+def start_EMBL2checklists_GUI():
     GUI()

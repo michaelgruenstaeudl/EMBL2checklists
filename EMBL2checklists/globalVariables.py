@@ -1,8 +1,7 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 '''
-Setting global variables.
+Setting global variables
 '''
 
 #####################

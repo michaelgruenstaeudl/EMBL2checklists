@@ -1,5 +1,10 @@
 CHANGELOG
 ---------
+###### Version 0.4 (2018.11.30)
+* Definition of entry points in setup.py
+* Update of README
+###### Version 0.3 (2018.11.29)
+* Minor code improvements
 ###### Version 0.2 (2018.10.02)
 * Minor code improvements
 * First release version
@@ -16,7 +21,7 @@ CHANGELOG
 * Inclusion of GUI written by Yannick Hartmaring
 ###### Version 0.0.2 (2018.05.22)
 * Generated separate function to extract charset symbols
-* Updated README
+* Update of README
 ###### Version 0.0.1 (2018.05.16)
 * Added example input and example output
 * Added setup.py

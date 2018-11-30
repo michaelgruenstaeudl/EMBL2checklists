@@ -26,9 +26,12 @@ EMBL2checklists converts EMBL- or GenBank-formatted flatfiles to submission chec
 
 
 ## EXAMPLE USAGE
+
+### On Linux / MacOS
+
 #### Commandline Interface
 ```
-$ python2 scripts/EMBL2checklists_CLI.py \
+$ EMBL2checklists_CLI \
     -i example/example_trnKmatK.embl \
     -o example/example_trnKmatK.tsv \
     -c trnK_matK \
@@ -36,8 +39,14 @@ $ python2 scripts/EMBL2checklists_CLI.py \
 ```
 #### GUI Interface
 ```
-$ python2 scripts/EMBL2checklists_GUI.py
+$ EMBL2checklists_GUI
 ```
+
+### On Windows
+
+#### GUI Interface
+Simply double-click the file `EMBL2checklist_GUI.exe`
+
 
 ![](EMBL2checklist_GUI.png)
 

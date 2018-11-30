@@ -52,7 +52,7 @@ Simply double-click the file `EMBL2checklist_GUI.exe`
 
 
 ## INSTALLATION
-First, please be sure to have [Python 2.7 install](https://www.python.org/downloads/) installed on your system. Then:
+First, please be sure to have [Python 2.7 installed](https://www.python.org/downloads/) on your system. Then:
 
 To get the most recent stable version of *EMBL2checklists*, run:
 

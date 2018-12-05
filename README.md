@@ -45,10 +45,10 @@ $ EMBL2checklists_GUI
 ### On Windows
 
 #### GUI Interface
-Simply double-click the file `EMBL2checklist_GUI.exe`
+Simply double-click the file `EMBL2checklist_GUI.exe` as generated during the installation (see below).
 
 
-![](EMBL2checklist_GUI.png)
+![](images/EMBL2checklist_GUI.png)
 
 
 ## INSTALLATION

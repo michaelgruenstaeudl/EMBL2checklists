@@ -16,7 +16,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='EMBL2checklists',
-    version='0.4',
+    version='0.5',
     author='Michael Gruenstaeudl, PhD',
     author_email='m.gruenstaeudl@fu-berlin.de',
     description='Converts EMBL- or GenBank-formatted flatfiles to submission checklists (i.e., tab-separated spreadsheets) for submission to ENA via the interactive Webin submission system',

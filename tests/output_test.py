@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 '''
 Unit tests to compare actual and expected output
 '''
@@ -43,7 +44,6 @@ except:
 script_rel_path = 'scripts/EMBL2checklists_launcher_CLI.py'
 script_abs_path = os.path.join(base_path, script_rel_path)
 
-e_mail = 'm.gruenstaeudl@fu-berlin.de'  # Please enter your email address here.
 
 ###########
 # CLASSES #
@@ -65,7 +65,7 @@ class OutputTestCases(unittest.TestCase):
         actual_otp_abs_path = os.path.join(base_path, actual_otp_rel_path)
         expect_otp_rel_path = os.path.join('example/output/', expect_otp)
         expect_otp_abs_path = os.path.join(base_path, expect_otp_rel_path)
-        cmd_list = ['python2', script_abs_path,
+        cmd_list = [sys.executable, script_abs_path,
                     '-i', actual_inp_abs_path,
                     '-o', actual_otp_abs_path,
                     '-c ETS', '-e no'
@@ -102,7 +102,7 @@ class OutputTestCases(unittest.TestCase):
         actual_otp_abs_path = os.path.join(base_path, actual_otp_rel_path)
         expect_otp_rel_path = os.path.join('example/output/', expect_otp)
         expect_otp_abs_path = os.path.join(base_path, expect_otp_rel_path)
-        cmd_list = ['python2', script_abs_path,
+        cmd_list = [sys.executable, script_abs_path,
                     '-i', actual_inp_abs_path,
                     '-o', actual_otp_abs_path,
                     '-c gene_intron', '-e no'
@@ -139,7 +139,7 @@ class OutputTestCases(unittest.TestCase):
         actual_otp_abs_path = os.path.join(base_path, actual_otp_rel_path)
         expect_otp_rel_path = os.path.join('example/output/', expect_otp)
         expect_otp_abs_path = os.path.join(base_path, expect_otp_rel_path)
-        cmd_list = ['python2', script_abs_path,
+        cmd_list = [sys.executable, script_abs_path,
                     '-i', actual_inp_abs_path,
                     '-o', actual_otp_abs_path,
                     '-c IGS', '-e no'
@@ -176,7 +176,7 @@ class OutputTestCases(unittest.TestCase):
         actual_otp_abs_path = os.path.join(base_path, actual_otp_rel_path)
         expect_otp_rel_path = os.path.join('example/output/', expect_otp)
         expect_otp_abs_path = os.path.join(base_path, expect_otp_rel_path)
-        cmd_list = ['python2', script_abs_path,
+        cmd_list = [sys.executable, script_abs_path,
                     '-i', actual_inp_abs_path,
                     '-o', actual_otp_abs_path,
                     '-c ITS', '-e no'
@@ -213,7 +213,7 @@ class OutputTestCases(unittest.TestCase):
         actual_otp_abs_path = os.path.join(base_path, actual_otp_rel_path)
         expect_otp_rel_path = os.path.join('example/output/', expect_otp)
         expect_otp_abs_path = os.path.join(base_path, expect_otp_rel_path)
-        cmd_list = ['python2', script_abs_path,
+        cmd_list = [sys.executable, script_abs_path,
                     '-i', actual_inp_abs_path,
                     '-o', actual_otp_abs_path,
                     '-c rRNA', '-e no'
@@ -250,7 +250,7 @@ class OutputTestCases(unittest.TestCase):
         actual_otp_abs_path = os.path.join(base_path, actual_otp_rel_path)
         expect_otp_rel_path = os.path.join('example/output/', expect_otp)
         expect_otp_abs_path = os.path.join(base_path, expect_otp_rel_path)
-        cmd_list = ['python2', script_abs_path,
+        cmd_list = [sys.executable, script_abs_path,
                     '-i', actual_inp_abs_path,
                     '-o', actual_otp_abs_path,
                     '-c trnK_matK', '-e no'

@@ -8,7 +8,8 @@ cache: pip
 
 os:
   - linux
-  - osx
+# Testing Python2.7 on OSX is currently not available in travis
+#  - osx
 
 install:
 # command to install dependencies

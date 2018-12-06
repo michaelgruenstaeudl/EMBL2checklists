@@ -1,6 +1,8 @@
 *EMBL2checklists*
 =================
 
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/michaelgruenstaeudl/EMBL2checklists?branch=master&svg=true)](https://ci.appveyor.com/api/projects/status/github/michaelgruenstaeudl/EMBL2checklists)
+[![Build Status](https://travis-ci.com/michaelgruenstaeudl/EMBL2checklists.svg?branch=master)](https://travis-ci.com/michaelgruenstaeudl/EMBL2checklists)
 [![PyPI status](https://img.shields.io/pypi/status/EMBL2checklists.svg)](https://pypi.python.org/pypi/EMBL2checklists/)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/EMBL2checklists.svg)](https://pypi.python.org/pypi/EMBL2checklists/)
 [![PyPI version shields.io](https://img.shields.io/pypi/v/EMBL2checklists.svg)](https://pypi.python.org/pypi/EMBL2checklists/)

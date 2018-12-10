@@ -13,9 +13,14 @@ import sys, os
 try:
     import EMBL2checklists
 except ImportError:
-    #sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'EMBL2checklists'))
-    sys.path.append(__file__.split(__info__)[0] + __info__)
-
+    try:
+        package_topLevel = __file__.split(__info__)[0] + __info__
+        if os.path.isdir(package_topLevel):
+            sys.path.append(package_topLevel)
+        if not os.path.isdir(package_topLevel):
+            raise ValueError('Top level of package not set.')
+    except ValueError:
+        sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'EMBL2checklists'))
 
 import EMBL2checklistsMain as E2C
 import globalVariables as GlobVars

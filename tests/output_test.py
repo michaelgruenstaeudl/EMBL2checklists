@@ -13,8 +13,14 @@ import sys, os
 try:
     import EMBL2checklists
 except ImportError:
-    #sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'EMBL2checklists'))
-    sys.path.append(__file__.split(__info__)[0] + __info__)
+    try:
+        package_topLevel = __file__.split(__info__)[0] + __info__
+        if os.path.isdir(package_topLevel):
+            sys.path.append(package_topLevel)
+        if not os.path.isdir(package_topLevel):
+            raise ValueError('Top level of package not set.')
+    except ValueError:
+        sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'EMBL2checklists'))
 
 import unittest
 import subprocess
@@ -38,14 +44,17 @@ import pdb
 # GLOBAL VARIABLES #
 ####################
 
-#pdb.set_trace()
-
-package_topLevel = __file__.split(__info__)[0] + __info__
-#try:
-#    package_topLevel = os.path.dirname(__file__.split(__info__)[0] + __info__)
-#except:
-#    tmp_path = os.path.split(inspect.getfile(EMBL2checklists))[0]
-#    package_topLevel = os.path.join(os.path.dirname(tmp_path), '..')
+try:
+    package_topLevel = __file__.split(__info__)[0] + __info__
+    if not os.path.isdir(package_topLevel):
+        raise ValueError('Top level of package not set.')
+except ValueError:
+    try:
+        package_topLevel = os.path.join(os.path.dirname(__file__), '..', 'EMBL2checklists')
+        if not os.path.isdir(package_topLevel):
+            raise ValueError('Top level of package not set.')
+    except ValueError:
+        package_topLevel = os.path.split(inspect.getfile(EMBL2checklists))[0] + '/'
 
 script_rel_path = 'scripts/EMBL2checklists_launcher_CLI.py'
 script_abs_path = os.path.join(package_topLevel, script_rel_path)

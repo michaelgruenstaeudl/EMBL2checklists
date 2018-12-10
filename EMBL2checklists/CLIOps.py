@@ -8,7 +8,13 @@ CLI operations in EMBL2checklists
 # IMPORT OPERATIONS #
 #####################
 import sys, os
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'EMBL2checklists'))
+
+# Import package modules of EMBL2checklists irrespective of install status
+try:
+    import EMBL2checklists
+except ImportError:
+    sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'EMBL2checklists'))
+
 
 import EMBL2checklistsMain as E2C
 import globalVariables as GlobVars

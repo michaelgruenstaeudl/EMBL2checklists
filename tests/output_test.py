@@ -7,23 +7,15 @@ Unit tests to compare actual and expected output
 #####################
 # IMPORT OPERATIONS #
 #####################
-import unittest
-
-# Add specific directory to sys.path in order to import its modules
-# NOTE: THIS RELATIVE IMPORTING IS AMATEURISH.
-# NOTE: COULD THE FOLLOWING IMPORT BE REPLACED WITH 'import EMBL2checklists'?
 import sys, os
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'EMBL2checklists'))
 
+# Import package modules of EMBL2checklists irrespective of install status
+try:
+    import EMBL2checklists
+except ImportError:
+    sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'EMBL2checklists'))
 
-## Possible solution (https://stackoverflow.com/questions/48665521/python-import-module-from-non-installed-package)
-#import imp
-#foo = imp.load_source('module1.foo', 'module1/module1/foo.py')
-#bar = imp.load_source('module2.bar', 'module2/module2/bar.py')
-#print(foo)
-#print(bar)
-
-
+import unittest
 import subprocess
 import inspect
 

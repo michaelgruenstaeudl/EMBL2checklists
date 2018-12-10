@@ -13,7 +13,12 @@ import globalVariables as GlobVars
 
 import sys, os
 from Bio import SeqIO
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'EMBL2checklists'))
+
+# Import package modules of EMBL2checklists irrespective of install status
+try:
+    import EMBL2checklists
+except ImportError:
+    sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'EMBL2checklists'))
 
 ###############
 # AUTHOR INFO #

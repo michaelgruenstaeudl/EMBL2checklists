@@ -8,7 +8,7 @@
 [![PyPI version shields.io](https://img.shields.io/pypi/v/EMBL2checklists.svg)](https://pypi.python.org/pypi/EMBL2checklists/)
 [![PyPI license](https://img.shields.io/pypi/l/EMBL2checklists.svg)](https://pypi.python.org/pypi/EMBL2checklists/)
 
-EMBL2checklists converts EMBL- or GenBank-formatted flatfiles to submission checklists (i.e., tab-separated spreadsheets) for submission to [ENA](http://www.ebi.ac.uk/ena) via the interactive [Webin submission system](https://www.ebi.ac.uk/ena/submit/sra/#home).
+EMBL2checklists converts EMBL- or GenBank-formatted flat files to submission-ready checklists (i.e., tab-separated spreadsheets) for submission to [ENA](http://www.ebi.ac.uk/ena) via the interactive [Webin submission system](https://www.ebi.ac.uk/ena/submit/sra/#home).
 
 
 <!---
@@ -34,8 +34,8 @@ EMBL2checklists converts EMBL- or GenBank-formatted flatfiles to submission chec
 #### Commandline Interface
 ```
 $ EMBL2checklists_CLI \
-    -i example/example_trnKmatK.embl \
-    -o example/example_trnKmatK.tsv \
+    -i example/input/example_trnK_matK.embl \
+    -o example/temp/example_trnK_matK.tsv \
     -c trnK_matK \
     -e no
 ```
@@ -70,17 +70,17 @@ Or, alternatively, if you want to get the latest development version of *EMBL2ch
 ## CITATION
 Using EMBL2checklists in your research? Please cite it!
 
-- Gruenstaeudl M., Hartmaring Y. (2018). paper_title_here. journal_title_here. https://doi.org/doi_address_here
+- Gruenstaeudl M., Hartmaring Y. (2018). EMBL2checklists: A Python package to facilitate the user-friendly submission of plant and fungal DNA barcoding sequences to ENA. bioRxiv: 435644. https://www.biorxiv.org/content/early/2018/10/05/435644
 
 ```
-@article{GruenstaeudlHartmaring2018,
-  doi = {...},
-  url = {...},
-  year  = {2018},
-  publisher = {...},
-  author = {Michael Gruenstaeudl, Yannick Hartmaring},
-  title = {...},
-  journal = {...}
+@article {Gruenstaeudl435644,
+    author = {Gruenstaeudl, Michael and Hartmaring, Yannick},
+    title = {EMBL2checklists: A Python package to facilitate the user-friendly submission of plant DNA barcoding sequences to ENA},
+    elocation-id = {435644},
+    year = {2018},
+    doi = {10.1101/435644},
+    URL = {https://www.biorxiv.org/content/early/2018/10/05/435644},
+    journal = {bioRxiv}
 }
 ```
 

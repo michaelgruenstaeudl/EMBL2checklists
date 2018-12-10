@@ -1,5 +1,7 @@
 CHANGELOG
 ---------
+###### Version 0.6 (2018.12.10)
+* Minor code improvements
 ###### Version 0.5 (2018.12.05)
 * Added CI features for CI with travis, appveyor
 ###### Version 0.4 (2018.11.30)

@@ -19,7 +19,7 @@ try:
     import EMBL2checklists
 except ImportError:
     #sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'EMBL2checklists'))
-    sys.path.append(os.path.dirname(__file__.split(__info__)[0] + __info__))
+    sys.path.append(__file__.split(__info__)[0] + __info__)
 
 ###############
 # AUTHOR INFO #

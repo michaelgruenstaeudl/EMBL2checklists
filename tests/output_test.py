@@ -14,7 +14,7 @@ try:
     import EMBL2checklists
 except ImportError:
     #sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'EMBL2checklists'))
-    sys.path.append(os.path.dirname(__file__.split(__info__)[0] + __info__))
+    sys.path.append(__file__.split(__info__)[0] + __info__)
 
 import unittest
 import subprocess
@@ -38,14 +38,17 @@ import pdb
 # GLOBAL VARIABLES #
 ####################
 
-try:
-    base_path = os.path.dirname(__file__.split(__info__)[0] + __info__)
-except:
-    tmp_path = os.path.split(inspect.getfile(EMBL2checklists))[0]
-    base_path = os.path.join(os.path.dirname(tmp_path), '..')
+#pdb.set_trace()
+
+package_topLevel = __file__.split(__info__)[0] + __info__
+#try:
+#    package_topLevel = os.path.dirname(__file__.split(__info__)[0] + __info__)
+#except:
+#    tmp_path = os.path.split(inspect.getfile(EMBL2checklists))[0]
+#    package_topLevel = os.path.join(os.path.dirname(tmp_path), '..')
 
 script_rel_path = 'scripts/EMBL2checklists_launcher_CLI.py'
-script_abs_path = os.path.join(base_path, script_rel_path)
+script_abs_path = os.path.join(package_topLevel, script_rel_path)
 
 
 ###########
@@ -63,11 +66,11 @@ class OutputTestCases(unittest.TestCase):
         expect_otp = 'example_ETS.tsv'
         actual_otp = sys._getframe().f_code.co_name  # Name of this function
         actual_inp_rel_path = os.path.join('example/input/', actual_inp)
-        actual_inp_abs_path = os.path.join(base_path, actual_inp_rel_path)
+        actual_inp_abs_path = os.path.join(package_topLevel, actual_inp_rel_path)
         actual_otp_rel_path = os.path.join('example/temp/', actual_otp)
-        actual_otp_abs_path = os.path.join(base_path, actual_otp_rel_path)
+        actual_otp_abs_path = os.path.join(package_topLevel, actual_otp_rel_path)
         expect_otp_rel_path = os.path.join('example/output/', expect_otp)
-        expect_otp_abs_path = os.path.join(base_path, expect_otp_rel_path)
+        expect_otp_abs_path = os.path.join(package_topLevel, expect_otp_rel_path)
         cmd_list = [sys.executable, script_abs_path,
                     '-i', actual_inp_abs_path,
                     '-o', actual_otp_abs_path,
@@ -100,11 +103,11 @@ class OutputTestCases(unittest.TestCase):
         expect_otp = 'example_gene_intron.tsv'
         actual_otp = sys._getframe().f_code.co_name  # Name of this function
         actual_inp_rel_path = os.path.join('example/input/', actual_inp)
-        actual_inp_abs_path = os.path.join(base_path, actual_inp_rel_path)
+        actual_inp_abs_path = os.path.join(package_topLevel, actual_inp_rel_path)
         actual_otp_rel_path = os.path.join('example/temp/', actual_otp)
-        actual_otp_abs_path = os.path.join(base_path, actual_otp_rel_path)
+        actual_otp_abs_path = os.path.join(package_topLevel, actual_otp_rel_path)
         expect_otp_rel_path = os.path.join('example/output/', expect_otp)
-        expect_otp_abs_path = os.path.join(base_path, expect_otp_rel_path)
+        expect_otp_abs_path = os.path.join(package_topLevel, expect_otp_rel_path)
         cmd_list = [sys.executable, script_abs_path,
                     '-i', actual_inp_abs_path,
                     '-o', actual_otp_abs_path,
@@ -137,11 +140,11 @@ class OutputTestCases(unittest.TestCase):
         expect_otp = 'example_IGS.tsv'
         actual_otp = sys._getframe().f_code.co_name  # Name of this function
         actual_inp_rel_path = os.path.join('example/input/', actual_inp)
-        actual_inp_abs_path = os.path.join(base_path, actual_inp_rel_path)
+        actual_inp_abs_path = os.path.join(package_topLevel, actual_inp_rel_path)
         actual_otp_rel_path = os.path.join('example/temp/', actual_otp)
-        actual_otp_abs_path = os.path.join(base_path, actual_otp_rel_path)
+        actual_otp_abs_path = os.path.join(package_topLevel, actual_otp_rel_path)
         expect_otp_rel_path = os.path.join('example/output/', expect_otp)
-        expect_otp_abs_path = os.path.join(base_path, expect_otp_rel_path)
+        expect_otp_abs_path = os.path.join(package_topLevel, expect_otp_rel_path)
         cmd_list = [sys.executable, script_abs_path,
                     '-i', actual_inp_abs_path,
                     '-o', actual_otp_abs_path,
@@ -174,11 +177,11 @@ class OutputTestCases(unittest.TestCase):
         expect_otp = 'example_ITS.tsv'
         actual_otp = sys._getframe().f_code.co_name  # Name of this function
         actual_inp_rel_path = os.path.join('example/input/', actual_inp)
-        actual_inp_abs_path = os.path.join(base_path, actual_inp_rel_path)
+        actual_inp_abs_path = os.path.join(package_topLevel, actual_inp_rel_path)
         actual_otp_rel_path = os.path.join('example/temp/', actual_otp)
-        actual_otp_abs_path = os.path.join(base_path, actual_otp_rel_path)
+        actual_otp_abs_path = os.path.join(package_topLevel, actual_otp_rel_path)
         expect_otp_rel_path = os.path.join('example/output/', expect_otp)
-        expect_otp_abs_path = os.path.join(base_path, expect_otp_rel_path)
+        expect_otp_abs_path = os.path.join(package_topLevel, expect_otp_rel_path)
         cmd_list = [sys.executable, script_abs_path,
                     '-i', actual_inp_abs_path,
                     '-o', actual_otp_abs_path,
@@ -211,11 +214,11 @@ class OutputTestCases(unittest.TestCase):
         expect_otp = 'example_rRNA.tsv'
         actual_otp = sys._getframe().f_code.co_name  # Name of this function
         actual_inp_rel_path = os.path.join('example/input/', actual_inp)
-        actual_inp_abs_path = os.path.join(base_path, actual_inp_rel_path)
+        actual_inp_abs_path = os.path.join(package_topLevel, actual_inp_rel_path)
         actual_otp_rel_path = os.path.join('example/temp/', actual_otp)
-        actual_otp_abs_path = os.path.join(base_path, actual_otp_rel_path)
+        actual_otp_abs_path = os.path.join(package_topLevel, actual_otp_rel_path)
         expect_otp_rel_path = os.path.join('example/output/', expect_otp)
-        expect_otp_abs_path = os.path.join(base_path, expect_otp_rel_path)
+        expect_otp_abs_path = os.path.join(package_topLevel, expect_otp_rel_path)
         cmd_list = [sys.executable, script_abs_path,
                     '-i', actual_inp_abs_path,
                     '-o', actual_otp_abs_path,
@@ -248,11 +251,11 @@ class OutputTestCases(unittest.TestCase):
         expect_otp = 'example_trnK_matK.tsv'
         actual_otp = sys._getframe().f_code.co_name  # Name of this function
         actual_inp_rel_path = os.path.join('example/input/', actual_inp)
-        actual_inp_abs_path = os.path.join(base_path, actual_inp_rel_path)
+        actual_inp_abs_path = os.path.join(package_topLevel, actual_inp_rel_path)
         actual_otp_rel_path = os.path.join('example/temp/', actual_otp)
-        actual_otp_abs_path = os.path.join(base_path, actual_otp_rel_path)
+        actual_otp_abs_path = os.path.join(package_topLevel, actual_otp_rel_path)
         expect_otp_rel_path = os.path.join('example/output/', expect_otp)
-        expect_otp_abs_path = os.path.join(base_path, expect_otp_rel_path)
+        expect_otp_abs_path = os.path.join(package_topLevel, expect_otp_rel_path)
         cmd_list = [sys.executable, script_abs_path,
                     '-i', actual_inp_abs_path,
                     '-o', actual_otp_abs_path,

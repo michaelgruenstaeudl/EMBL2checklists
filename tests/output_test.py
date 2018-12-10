@@ -37,10 +37,12 @@ import pdb
 # GLOBAL VARIABLES #
 ####################
 
-try:
-    base_path = os.path.split(inspect.getfile(EMBL2checklists))[0] + '/' + '..'
-except:
-    base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '../'
+base_path = os.path.dirname(__file__.split(__info__)[0] + __info__ + "/")
+
+#try:
+#    base_path = os.path.split(inspect.getfile(EMBL2checklists))[0] + '/' + '..'
+#except:
+#    base_path = os.path.dirname(__file__.split(__info__)[0] + __info__ + "/")
 
 script_rel_path = 'scripts/EMBL2checklists_launcher_CLI.py'
 script_abs_path = os.path.join(base_path, script_rel_path)

@@ -42,7 +42,7 @@ try:
 except:
     base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-script_rel_path = '../scripts/EMBL2checklists_launcher_CLI.py'
+script_rel_path = 'scripts/EMBL2checklists_launcher_CLI.py'
 script_abs_path = os.path.join(base_path, script_rel_path)
 
 
@@ -60,11 +60,11 @@ class OutputTestCases(unittest.TestCase):
         actual_inp = 'example_ETS.embl'
         expect_otp = 'example_ETS.tsv'
         actual_otp = sys._getframe().f_code.co_name  # Name of this function
-        actual_inp_rel_path = os.path.join('../example/input/', actual_inp)
+        actual_inp_rel_path = os.path.join('example/input/', actual_inp)
         actual_inp_abs_path = os.path.join(base_path, actual_inp_rel_path)
-        actual_otp_rel_path = os.path.join('../example/temp/', actual_otp)
+        actual_otp_rel_path = os.path.join('example/temp/', actual_otp)
         actual_otp_abs_path = os.path.join(base_path, actual_otp_rel_path)
-        expect_otp_rel_path = os.path.join('../example/output/', expect_otp)
+        expect_otp_rel_path = os.path.join('example/output/', expect_otp)
         expect_otp_abs_path = os.path.join(base_path, expect_otp_rel_path)
         cmd_list = [sys.executable, script_abs_path,
                     '-i', actual_inp_abs_path,
@@ -97,11 +97,11 @@ class OutputTestCases(unittest.TestCase):
         actual_inp = 'example_gene_intron.embl'
         expect_otp = 'example_gene_intron.tsv'
         actual_otp = sys._getframe().f_code.co_name  # Name of this function
-        actual_inp_rel_path = os.path.join('../example/input/', actual_inp)
+        actual_inp_rel_path = os.path.join('example/input/', actual_inp)
         actual_inp_abs_path = os.path.join(base_path, actual_inp_rel_path)
-        actual_otp_rel_path = os.path.join('../example/temp/', actual_otp)
+        actual_otp_rel_path = os.path.join('example/temp/', actual_otp)
         actual_otp_abs_path = os.path.join(base_path, actual_otp_rel_path)
-        expect_otp_rel_path = os.path.join('../example/output/', expect_otp)
+        expect_otp_rel_path = os.path.join('example/output/', expect_otp)
         expect_otp_abs_path = os.path.join(base_path, expect_otp_rel_path)
         cmd_list = [sys.executable, script_abs_path,
                     '-i', actual_inp_abs_path,
@@ -134,11 +134,11 @@ class OutputTestCases(unittest.TestCase):
         actual_inp = 'example_IGS.embl'
         expect_otp = 'example_IGS.tsv'
         actual_otp = sys._getframe().f_code.co_name  # Name of this function
-        actual_inp_rel_path = os.path.join('../example/input/', actual_inp)
+        actual_inp_rel_path = os.path.join('example/input/', actual_inp)
         actual_inp_abs_path = os.path.join(base_path, actual_inp_rel_path)
-        actual_otp_rel_path = os.path.join('../example/temp/', actual_otp)
+        actual_otp_rel_path = os.path.join('example/temp/', actual_otp)
         actual_otp_abs_path = os.path.join(base_path, actual_otp_rel_path)
-        expect_otp_rel_path = os.path.join('../example/output/', expect_otp)
+        expect_otp_rel_path = os.path.join('example/output/', expect_otp)
         expect_otp_abs_path = os.path.join(base_path, expect_otp_rel_path)
         cmd_list = [sys.executable, script_abs_path,
                     '-i', actual_inp_abs_path,
@@ -171,11 +171,11 @@ class OutputTestCases(unittest.TestCase):
         actual_inp = 'example_ITS.embl'
         expect_otp = 'example_ITS.tsv'
         actual_otp = sys._getframe().f_code.co_name  # Name of this function
-        actual_inp_rel_path = os.path.join('../example/input/', actual_inp)
+        actual_inp_rel_path = os.path.join('example/input/', actual_inp)
         actual_inp_abs_path = os.path.join(base_path, actual_inp_rel_path)
-        actual_otp_rel_path = os.path.join('../example/temp/', actual_otp)
+        actual_otp_rel_path = os.path.join('example/temp/', actual_otp)
         actual_otp_abs_path = os.path.join(base_path, actual_otp_rel_path)
-        expect_otp_rel_path = os.path.join('../example/output/', expect_otp)
+        expect_otp_rel_path = os.path.join('example/output/', expect_otp)
         expect_otp_abs_path = os.path.join(base_path, expect_otp_rel_path)
         cmd_list = [sys.executable, script_abs_path,
                     '-i', actual_inp_abs_path,
@@ -208,11 +208,11 @@ class OutputTestCases(unittest.TestCase):
         actual_inp = 'example_rRNA.embl'
         expect_otp = 'example_rRNA.tsv'
         actual_otp = sys._getframe().f_code.co_name  # Name of this function
-        actual_inp_rel_path = os.path.join('../example/input/', actual_inp)
+        actual_inp_rel_path = os.path.join('example/input/', actual_inp)
         actual_inp_abs_path = os.path.join(base_path, actual_inp_rel_path)
-        actual_otp_rel_path = os.path.join('../example/temp/', actual_otp)
+        actual_otp_rel_path = os.path.join('example/temp/', actual_otp)
         actual_otp_abs_path = os.path.join(base_path, actual_otp_rel_path)
-        expect_otp_rel_path = os.path.join('../example/output/', expect_otp)
+        expect_otp_rel_path = os.path.join('example/output/', expect_otp)
         expect_otp_abs_path = os.path.join(base_path, expect_otp_rel_path)
         cmd_list = [sys.executable, script_abs_path,
                     '-i', actual_inp_abs_path,
@@ -245,11 +245,11 @@ class OutputTestCases(unittest.TestCase):
         actual_inp = 'example_trnK_matK.embl'
         expect_otp = 'example_trnK_matK.tsv'
         actual_otp = sys._getframe().f_code.co_name  # Name of this function
-        actual_inp_rel_path = os.path.join('../example/input/', actual_inp)
+        actual_inp_rel_path = os.path.join('example/input/', actual_inp)
         actual_inp_abs_path = os.path.join(base_path, actual_inp_rel_path)
-        actual_otp_rel_path = os.path.join('../example/temp/', actual_otp)
+        actual_otp_rel_path = os.path.join('example/temp/', actual_otp)
         actual_otp_abs_path = os.path.join(base_path, actual_otp_rel_path)
-        expect_otp_rel_path = os.path.join('../example/output/', expect_otp)
+        expect_otp_rel_path = os.path.join('example/output/', expect_otp)
         expect_otp_abs_path = os.path.join(base_path, expect_otp_rel_path)
         cmd_list = [sys.executable, script_abs_path,
                     '-i', actual_inp_abs_path,
